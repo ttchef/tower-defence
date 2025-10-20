@@ -26,7 +26,7 @@ typedef struct {
 struct GameManager {
     StateStack states;
     Playing playing;   
-};
+}
 
 // ==== State handling ==== 
 int32_t pushGameState(GameManager* game, GameState state);
