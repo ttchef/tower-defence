@@ -1,7 +1,7 @@
 
 CC = gcc
 
-CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpedantic -g -O0 -fsanitize=address -fsanitize=undefined
+CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpedantic -g -O0 -fsanitize=address -fsanitize=undefined -std=c99
 CFLAGS_RELEASE = -O2
 CFLAGS = -Iinclude $(CFLAGS_DEBUG)
 

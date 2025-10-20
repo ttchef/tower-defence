@@ -21,3 +21,8 @@ GameState* getCurrentState(GameManager* game) {
     return &stack->states[stack->top];
 }
 
+int32_t initGame(GameManager* game) {
+    int32_t top = game->states.top;
+    top++;
+    return 0;
+}

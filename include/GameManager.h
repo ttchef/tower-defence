@@ -24,10 +24,14 @@ typedef struct {
 
 typedef struct {
     StateStack states;
+    
 } GameManager;
 
+// ==== State handling ==== 
 int32_t pushGameState(GameManager* game, GameState state);
 int32_t popGameState(GameManager* game);
 GameState* getCurrentState(GameManager* game);
+
+int32_t initGame(GameManager* game);
 
 #endif

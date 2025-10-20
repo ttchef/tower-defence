@@ -19,10 +19,12 @@ int main() {
     SetTargetFPS(60);
 
     GameManager game;
+    initGame(&game);
+
     pushGameState(&game, (GameState){STATE_MENU, update, draw});
 
     while (!WindowShouldClose()) {
-        GameState* currentState = &game.states.states[game.states.top];
+        GameState* currentState = getCurrentState(&game);
         currentState->update();
 
         BeginDrawing();
@@ -35,3 +37,4 @@ int main() {
 
     return 0;
 }
+
