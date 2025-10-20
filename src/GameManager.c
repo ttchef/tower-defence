@@ -1,6 +1,7 @@
 
 #include "GameManager.h"
 #include "definies.h"
+#include "playing/playing.h"
 
 int32_t pushGameState(GameManager *game, GameState state) {
     StateStack* stack = &game->states;
@@ -22,7 +23,6 @@ GameState* getCurrentState(GameManager* game) {
 }
 
 int32_t initGame(GameManager* game) {
-    int32_t top = game->states.top;
-    top++;
+    initPlaying(&game->playing);
     return 0;
 }

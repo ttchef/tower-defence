@@ -4,32 +4,26 @@
 #include <raylib.h>
 
 #include "GameManager.h"
-
-void update() {
-
-}
-
-void draw() {
-    DrawRectangle(400, 300, 50, 50, WHITE);
-}
+#include "playing/playing.h"
 
 int main() {
 
+    srand(time(NULL));
     InitWindow(800, 600, "Tower-Defence");
     SetTargetFPS(60);
 
     GameManager game;
     initGame(&game);
 
-    pushGameState(&game, (GameState){STATE_MENU, update, draw});
+    pushGameState(&game, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
 
     while (!WindowShouldClose()) {
         GameState* currentState = getCurrentState(&game);
-        currentState->update();
+        currentState->update(&game);
 
         BeginDrawing();
             ClearBackground(BLACK);
-            currentState->draw();
+            currentState->draw(&game);
         EndDrawing();
     }
 

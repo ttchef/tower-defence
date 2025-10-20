@@ -6,6 +6,10 @@
 #include <stdint.h> 
 #include <stdlib.h> 
 #include <stdbool.h>
+#include <time.h>
+
+#include <raylib.h>
+#include <raymath.h>
 
 #define GAME_ERROR -1
 #define GAME_SUCCSESS 0
@@ -16,5 +20,7 @@
 
 #define STATIC_ASSERT(expr) _Static_assert(expr, #expr)
 #define WUNUSED __attribute__((warn_unused_result))
+
+typedef struct GameManager GameManager;
 
 #endif

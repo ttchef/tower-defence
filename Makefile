@@ -7,7 +7,7 @@ CFLAGS = -Iinclude $(CFLAGS_DEBUG)
 
 LDFLAGS = -lraylib
 
-SRC_FILES = $(wildcard src/*.c) 
+SRC_FILES = $(shell find src -name *.c) 
 OBJ_FILES = $(SRC_FILES:.c=.o)
 
 all: run

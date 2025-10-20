@@ -3,18 +3,19 @@
 #define GAME_MANAGER_H
 
 #include "definies.h"
+#include "playing/playing.h"
 
 #define MAX_GAME_STATES 10
 
 typedef enum {
     STATE_MENU,
-    STATE_PLAYIHNG,
+    STATE_PLAYING,
 } GameStateType;
 
 typedef struct {
     GameStateType type;
-    void (*update)();
-    void (*draw)();
+    void (*update)(GameManager*);
+    void (*draw)(GameManager*);
 } GameState;
 
 typedef struct {
@@ -22,10 +23,10 @@ typedef struct {
     int32_t top;
 } StateStack;
 
-typedef struct {
+struct GameManager {
     StateStack states;
-    
-} GameManager;
+    Playing playing;   
+};
 
 // ==== State handling ==== 
 int32_t pushGameState(GameManager* game, GameState state);
