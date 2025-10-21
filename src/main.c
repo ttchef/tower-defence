@@ -14,6 +14,7 @@ int main() {
 
     while (!WindowShouldClose()) {
         GameState* currentState = getCurrentState(&game);
+        handleInput(&game);
         currentState->update(&game);
 
         BeginDrawing();

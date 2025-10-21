@@ -37,5 +37,6 @@ int32_t popGameState(GameManager* game);
 GameState* getCurrentState(GameManager* game);
 
 int32_t initGame(GameManager* game);
+void handleInput(GameManager* gm);
 
 #endif

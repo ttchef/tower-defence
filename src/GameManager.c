@@ -1,6 +1,7 @@
 
 #include "GameManager.h"
 #include "definies.h"
+#include "playing/playing.h"
 
 int32_t pushGameState(GameManager *game, GameState state) {
     StateStack* stack = &game->states;
@@ -26,6 +27,11 @@ int32_t initGame(GameManager* game) {
     InitWindow(800, 600, "Tower-Defence");
     SetTargetFPS(60);
 
-    initPlaying(&game->playing);
+    initPlaying(game);
     return 0;
 }
+
+void handleInput(GameManager *gm) {
+    handlePlayingInput(gm);
+}
+

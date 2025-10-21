@@ -15,8 +15,6 @@ void initRandomPath(Path *path) {
         p.x += deltaX;
         p.y += deltaY;
         path->points[i] = p;
-        printf("Point %d: %f %f\n", i, p.x, p.y);
-
         t += inc;
     }
 }
