@@ -3,6 +3,7 @@
 #define GAME_MANAGER_H
 
 #include "definies.h"
+#include "GameManager.h"
 #include "playing/playing.h"
 
 #define MAX_GAME_STATES 10
@@ -24,9 +25,11 @@ typedef struct {
 } StateStack;
 
 struct GameManager {
+    int32_t screenWidth;
+    int32_t screenHeight;
     StateStack states;
     Playing playing;   
-}
+};
 
 // ==== State handling ==== 
 int32_t pushGameState(GameManager* game, GameState state);

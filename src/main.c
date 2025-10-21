@@ -4,13 +4,8 @@
 #include <raylib.h>
 
 #include "GameManager.h"
-#include "playing/playing.h"
 
 int main() {
-
-    srand(time(NULL));
-    InitWindow(800, 600, "Tower-Defence");
-    SetTargetFPS(60);
 
     GameManager game;
     initGame(&game);
