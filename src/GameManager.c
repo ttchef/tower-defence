@@ -6,14 +6,16 @@
 int32_t pushGameState(GameManager *game, GameState state) {
     StateStack* stack = &game->states;
     if (stack->top + 1 >= MAX_GAME_STATES) return GAME_ERROR;
-    stack->states[++stack->top] = state;
+    stack->top++;
+    printf("\n\n\ntop: %d\n\n\n", stack->top);
+    stack->states[stack->top] = state;
     return stack->top;
 }
 
 int32_t popGameState(GameManager *game) {
     StateStack* stack = &game->states;
     if (stack->top <= 0) return GAME_ERROR;
-    int32_t pop = stack->top--;
+    int32_t pop = (stack->top)--;
     return pop;
 }
 
@@ -23,13 +25,14 @@ GameState* getCurrentState(GameManager* game) {
 }
 
 int32_t initGame(GameManager* game) {
+
     srand(time(NULL));
     InitWindow(800, 600, "Tower-Defence");
     SetTargetFPS(60);
 
-    game->states.top = 0;
-
+    // TODO: fix overwrite error
     initPlaying(game);
+    game->states.top = -1;
     return 0;
 }
 

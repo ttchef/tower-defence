@@ -1,5 +1,4 @@
 
-
 #include "GameManager.h"
 
 int main() {
@@ -7,9 +6,10 @@ int main() {
     GameManager* gm = malloc(sizeof(GameManager));
     initGame(gm);
 
-    pushGameState(gm, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
+    gm->states.top = pushGameState(gm, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
 
     while (!WindowShouldClose()) {
+        gm->deltaTime = GetFrameTime();
         GameState* currentState = getCurrentState(gm);
         handleInput(gm);
         currentState->update(gm);

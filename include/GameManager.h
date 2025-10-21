@@ -25,6 +25,7 @@ typedef struct {
 } StateStack;
 
 struct GameManager {
+    float deltaTime;
     int32_t screenWidth;
     int32_t screenHeight;
     StateStack states;

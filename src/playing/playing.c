@@ -25,8 +25,10 @@ void handlePlayingInput(GameManager* gm) {
 }
 
 void updatePlaying(GameManager* gm) {
-    int x = gm->states.top;
-    x++;
+    Playing* playing = &gm->playing;
+    for (int32_t i = 0; i < MAX_ENEMIES; i++) {
+        updateEnemy(gm, &playing->enemies[i]);
+    }
 }
 
 void drawPlaying(GameManager* gm) {

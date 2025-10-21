@@ -1,12 +1,46 @@
 
 #include "playing/enemy.h"
+#include "playing/path.h"
+#include "playing/playing.h"
+#include "GameManager.h"
+#include <raymath.h>
 
 Enemy spawnEnemy() {
-    Enemy e;
-    e.pos = (Vector2){50, 550};
-    e.active = true;
-    e.interpolate = 0.0f;
-    return e;
+    return (Enemy) {
+        .pos = (Vector2){50.0f, 550.0f},
+        .active = true,
+        .interpolate = 0.0f,
+        .pointsIndex = -1,
+        .speed = 3.0f,
+    };
+}
+
+void updateEnemy(GameManager *gm, Enemy *enemy) {
+    Playing* playing = &gm->playing;
+    Vector2 newPos = {0};
+
+    // End
+    if (enemy->pointsIndex + 1 > PATH_POINTS_NUM) {
+        enemy->pos = playing->path.end;
+        return;
+    }
+
+    else if (enemy->pointsIndex + 1 == PATH_POINTS_NUM) {
+        newPos = Vector2Lerp(playing->path.points[PATH_POINTS_NUM - 1], playing->path.end, enemy->interpolate);
+    }
+    else if (enemy->pointsIndex == -1) {
+        newPos = Vector2Lerp(playing->path.start, playing->path.points[0], enemy->interpolate);
+    }
+    else {
+        newPos = Vector2Lerp(playing->path.points[enemy->pointsIndex], playing->path.points[enemy->pointsIndex + 1], enemy->interpolate);
+    }
+    enemy->pos = newPos;
+    enemy->interpolate += enemy->speed * gm->deltaTime;
+    
+    if (enemy->interpolate >= 1.0f) {
+        enemy->interpolate = 0.0f;
+        enemy->pointsIndex++;
+    }
 }
 
 void drawEnemy(Enemy *enemy) {
