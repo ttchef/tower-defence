@@ -1,29 +1,28 @@
 
-#include <stdio.h>
-
-#include <raylib.h>
 
 #include "GameManager.h"
 
 int main() {
 
-    GameManager game;
-    initGame(&game);
+    GameManager* gm = malloc(sizeof(GameManager));
+    initGame(gm);
 
-    pushGameState(&game, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
+    pushGameState(gm, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
 
     while (!WindowShouldClose()) {
-        GameState* currentState = getCurrentState(&game);
-        handleInput(&game);
-        currentState->update(&game);
+        GameState* currentState = getCurrentState(gm);
+        handleInput(gm);
+        currentState->update(gm);
 
         BeginDrawing();
             ClearBackground(BLACK);
-            currentState->draw(&game);
+            currentState->draw(gm);
         EndDrawing();
     }
 
     CloseWindow();
+    free(gm);
+    gm = NULL;
 
     return 0;
 }

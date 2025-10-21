@@ -27,6 +27,8 @@ int32_t initGame(GameManager* game) {
     InitWindow(800, 600, "Tower-Defence");
     SetTargetFPS(60);
 
+    game->states.top = 0;
+
     initPlaying(game);
     return 0;
 }

@@ -8,6 +8,7 @@
 
 typedef struct {
     bool active;
+    float interpolate;
     Vector2 pos;
 } Enemy;
 
