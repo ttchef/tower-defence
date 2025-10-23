@@ -13,7 +13,7 @@ typedef struct {
     Vector2 end;
 } Path;
 
-void initRandomPath(Path* path);
-void drawPath(Path* path);
+void initRandomPath(GameManager* gm);
+void drawPath(GameManager* gm);
 
 #endif

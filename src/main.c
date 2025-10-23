@@ -1,5 +1,6 @@
 
 #include "GameManager.h"
+#include <math.h>
 #include <raylib.h>
 
 int main() {
@@ -12,6 +13,8 @@ int main() {
     while (!WindowShouldClose()) {
         gm->deltaTime = GetFrameTime();
         GameState* currentState = getCurrentState(gm);
+        gm->screenWidth = GetScreenWidth();
+        gm->screenHeight = GetScreenHeight();
         handleInput(gm);
         currentState->update(gm, gm->deltaTime);
 
@@ -19,6 +22,7 @@ int main() {
             ClearBackground(DARKGREEN);
             currentState->draw(gm);
         EndDrawing();
+            
     }
 
     CloseWindow();

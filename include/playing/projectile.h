@@ -16,7 +16,7 @@ typedef struct Projectile  {
 } Projectile;
 
 Projectile spawnProjectile(Vector2 pos, int32_t index);
-void updateProjectile(Projectile* proj, Enemy* enemies, float dt);
+void updateProjectile(Projectile* proj, Enemy* enemies, float dt, GameManager* gm);
 void drawProjectile(Projectile* proj);
 
 #endif

@@ -25,13 +25,17 @@ GameState* getCurrentState(GameManager* game) {
 }
 
 int32_t initGame(GameManager* game) {
-
+    // Zero init 
+    memset(game, 0, sizeof(GameManager));
+    game->screenWidth = 1280;
+    game->screenHeight = 780;
+    
+    // Create Window
     srand(time(NULL));
-    SetConfigFlags(FLAG_MSAA_4X_HINT);
-    InitWindow(800, 600, "Tower-Defence");
+    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE);
+    InitWindow(game->screenWidth, game->screenHeight, "Tower-Defence");
     SetTargetFPS(60);
 
-    // TODO: fix overwrite error
     initPlaying(game);
     game->states.top = -1;
     return 0;

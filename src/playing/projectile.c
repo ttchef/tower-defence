@@ -1,4 +1,6 @@
 
+#include "GameManager.h"
+#include "playing/playing.h" 
 #include "playing/enemy.h"
 #include "playing/projectile.h"
 #include <raymath.h>
@@ -14,7 +16,11 @@ Projectile spawnProjectile(Vector2 pos, int32_t index) {
     };  
 }
 
-void updateProjectile(Projectile *proj, Enemy* enemies, float dt) {
+void updateProjectile(Projectile *proj, Enemy* enemies, float dt, GameManager* gm) {
+    if (!enemies[proj->index].active) {
+        proj->active = false;
+        return;
+    }
     Vector2 target = enemies[proj->index].pos;
     float diff = Vector2Distance(proj->pos, target);
 
@@ -29,6 +35,7 @@ void updateProjectile(Projectile *proj, Enemy* enemies, float dt) {
     if (diff < proj->size + enemies[proj->index].size) {
         proj->active = false;
         enemies[proj->index].active = false;
+        gm->playing.money++;
         return;
     }
 

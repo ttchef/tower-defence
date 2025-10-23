@@ -13,11 +13,17 @@ typedef struct {
     Enemy enemies[MAX_ENEMIES];
     Tower towers[MAX_TOWERS];
     Projectile proj[MAX_PROJECTILES];
+
+    int32_t money;
+    int32_t health;
+    int32_t guiOffset;
+    int32_t guiWidth;
 } Playing;
 
 void initPlaying(GameManager* gm);
 void handlePlayingInput(GameManager* gm);
 void updatePlaying(GameManager* gm, float dt);
 void drawPlaying(GameManager* gm);
+void drawGui(GameManager* gm);
 
 #endif

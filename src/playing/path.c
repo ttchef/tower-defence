@@ -1,9 +1,10 @@
 
+#include "GameManager.h"
 #include "playing/path.h"
+#include "definies.h"
 
-void initRandomPath(Path *path) {
-    path->start = (Vector2){50, 550};
-    path->end = (Vector2){750, 50};
+void initRandomPath(GameManager* gm) {
+    Path* path = &gm->playing.path;
 
     float t = 0.0f;
     const float inc = 1.0f / PATH_POINTS_NUM;
@@ -19,7 +20,9 @@ void initRandomPath(Path *path) {
     }
 }
 
-void drawPath(Path *path) {
+void drawPath(GameManager* gm) {
+    Path* path = &gm->playing.path;
+
     // Start and End
     DrawLineEx(path->start, path->points[0], 5, WHITE);
     DrawLineEx(path->points[PATH_POINTS_NUM - 1], path->end, 5, WHITE);

@@ -25,6 +25,7 @@ void updateEnemy(GameManager *gm, Enemy *enemy) {
     if (enemy->pointsIndex + 1 > PATH_POINTS_NUM) {
         enemy->pos = playing->path.end;
         enemy->active = false;
+        playing->health--;
         return;
     }
 

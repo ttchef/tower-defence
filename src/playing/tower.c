@@ -27,6 +27,7 @@ void updateTower(Tower *tower, Enemy* enemies, Projectile* proj) {
             for (int32_t j = 0; j < MAX_PROJECTILES; j++) {
                 if (!proj[j].active) {
                     proj[j] = spawnProjectile(tower->pos, i);
+                    break;
                 }
             }
             tower->sleep = 0.0f;
