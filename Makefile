@@ -19,7 +19,7 @@ build/main: $(OBJ_FILES)
 	mkdir -p build
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-run: build/main
+run: clean build/main
 	./build/main
 
 clean:

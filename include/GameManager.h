@@ -15,7 +15,7 @@ typedef enum {
 
 typedef struct {
     GameStateType type;
-    void (*update)(GameManager*);
+    void (*update)(GameManager*, float);
     void (*draw)(GameManager*);
 } GameState;
 

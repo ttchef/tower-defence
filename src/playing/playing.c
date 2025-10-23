@@ -4,6 +4,7 @@
 #include "playing/path.h"
 
 #include "GameManager.h"
+#include "playing/projectile.h"
 #include "playing/tower.h"
 #include <raylib.h>
 
@@ -38,13 +39,16 @@ void handlePlayingInput(GameManager* gm) {
     }
 }
 
-void updatePlaying(GameManager* gm) {
+void updatePlaying(GameManager* gm, float dt) {
     Playing* playing = &gm->playing;
     for (int32_t i = 0; i < MAX_ENEMIES; i++) {
         if (gm->playing.enemies[i].active) updateEnemy(gm, &playing->enemies[i]);
     }
     for (int32_t i = 0; i < MAX_TOWERS; i++) {
-        if (gm->playing.towers[i].active) updateTower(&gm->playing.towers[i], gm->playing.enemies);
+        if (gm->playing.towers[i].active) updateTower(&gm->playing.towers[i], gm->playing.enemies, playing->proj);
+    }
+    for (int32_t i = 0; i < MAX_PROJECTILES; i++) {
+        if (gm->playing.proj[i].active) updateProjectile(&playing->proj[i], playing->enemies, dt);
     }
 }
 
@@ -56,6 +60,9 @@ void drawPlaying(GameManager* gm) {
 
     for (int32_t i = 0; i < MAX_TOWERS; i++) {
         if (gm->playing.towers[i].active) drawTower(&gm->playing.towers[i]);
+    }
+    for (int32_t i = 0; i < MAX_PROJECTILES; i++) {
+        if (gm->playing.proj[i].active) drawProjectile(&gm->playing.proj[i]);
     }
 }
 

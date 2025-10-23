@@ -13,7 +13,7 @@ int main() {
         gm->deltaTime = GetFrameTime();
         GameState* currentState = getCurrentState(gm);
         handleInput(gm);
-        currentState->update(gm);
+        currentState->update(gm, gm->deltaTime);
 
         BeginDrawing();
             ClearBackground(DARKGREEN);
