@@ -24,13 +24,17 @@ void drawPath(Path *path) {
     DrawLineEx(path->start, path->points[0], 5, WHITE);
     DrawLineEx(path->points[PATH_POINTS_NUM - 1], path->end, 5, WHITE);
 
+    for (int32_t i = 1; i < PATH_POINTS_NUM; i++) {
+        DrawLineEx(path->points[i - 1], path->points[i], 5, WHITE);
+    }
+
+    for (int32_t i = 1; i < PATH_POINTS_NUM; i++) {
+        DrawCircle(path->points[i].x, path->points[i].y, 10, RED);
+    }
+
     DrawCircle(path->start.x, path->start.y, 10, YELLOW);
     DrawCircle(path->end.x, path->end.y, 10, YELLOW);
     DrawCircle(path->points[0].x, path->points[0].y, 10, RED);
-    for (int32_t i = 1; i < PATH_POINTS_NUM; i++) {
-        DrawLineEx(path->points[i - 1], path->points[i], 5, WHITE);
-        DrawCircle(path->points[i].x, path->points[i].y, 10, RED);
-    }
 }
 
 

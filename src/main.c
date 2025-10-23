@@ -1,5 +1,6 @@
 
 #include "GameManager.h"
+#include <raylib.h>
 
 int main() {
 
@@ -15,7 +16,7 @@ int main() {
         currentState->update(gm);
 
         BeginDrawing();
-            ClearBackground(BLACK);
+            ClearBackground(DARKGREEN);
             currentState->draw(gm);
         EndDrawing();
     }

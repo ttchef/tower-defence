@@ -7,7 +7,6 @@ int32_t pushGameState(GameManager *game, GameState state) {
     StateStack* stack = &game->states;
     if (stack->top + 1 >= MAX_GAME_STATES) return GAME_ERROR;
     stack->top++;
-    printf("\n\n\ntop: %d\n\n\n", stack->top);
     stack->states[stack->top] = state;
     return stack->top;
 }
