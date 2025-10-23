@@ -9,15 +9,23 @@
 
 #define MAX_TOWERS 100
 
+typedef enum {
+    ROCK,
+    PLANT,
+} TowerType;
+
 typedef struct Tower {
+    TowerType type;
     bool active;
     Vector2 pos;
     float radius;
     float cooldown;
     float sleep;
+    float damage;
+    int32_t price;
 } Tower;
 
-Tower placeTower(Vector2 pos);
+Tower placeTower(TowerType tower, Vector2 pos);
 void updateTower(Tower* tower, Enemy* enemis, Projectile* proj);
 void drawTower(Tower* tower);
 

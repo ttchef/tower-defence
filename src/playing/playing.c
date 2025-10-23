@@ -36,8 +36,8 @@ void handlePlayingInput(GameManager* gm) {
         if (playing->money < 350) return;
         for (int32_t i = 0; i < MAX_TOWERS; i++) {
             if (!playing->towers[i].active) {
-                playing->towers[i] = placeTower(GetMousePosition());
-                playing->money -= 350;
+                playing->towers[i] = placeTower(ROCK, GetMousePosition());
+                playing->money -= playing->towers[i].price;
                 break;
             }
         }

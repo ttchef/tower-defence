@@ -4,14 +4,27 @@
 #include "playing/projectile.h"
 #include <raylib.h>
 
-Tower placeTower(Vector2 pos) {
-    return (Tower) {
+Tower placeTower(TowerType type, Vector2 pos) {
+    Tower t = {
         .active = true,
         .pos = pos,
-        .radius = 150.0f,
-        .cooldown = 1.0f,
-        .sleep = 0.0f,
     };
+
+    switch (type) {
+        case ROCK:
+            t.radius = 100.0f;
+            t.cooldown = 1.0f;
+            t.damage = 100.0f;
+            t.price = 350;
+            break;
+        case PLANT:
+            t.radius = 175.0f;
+            t.cooldown = 0.0f;
+            t.damage = 50.0f;
+            t.price = 400;
+            break;
+    };
+    return t;
 }
 
 void updateTower(Tower *tower, Enemy* enemies, Projectile* proj) {
