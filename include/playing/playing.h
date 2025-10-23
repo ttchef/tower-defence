@@ -18,6 +18,8 @@ typedef struct {
     int32_t health;
     int32_t guiOffset;
     int32_t guiWidth;
+
+    Texture2D towerTex[TOWER_TYPE_NUM];
 } Playing;
 
 void initPlaying(GameManager* gm);
@@ -27,3 +29,4 @@ void drawPlaying(GameManager* gm);
 void drawGui(GameManager* gm);
 
 #endif
+

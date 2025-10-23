@@ -20,6 +20,10 @@ void initPlaying(GameManager* gm) {
 
     playing->money = 1000;
     playing->health = 100;
+
+    playing->towerTex[ROCK] = LoadTexture("res/rock.jpg");
+    playing->towerTex[PLANT] = LoadTexture("res/plant.jpg");
+    playing->towerTex[MOUNTAIN] = LoadTexture("res/mountain.jpg");
 }
 
 void handlePlayingInput(GameManager* gm) {
@@ -33,6 +37,8 @@ void handlePlayingInput(GameManager* gm) {
         }
     }
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        Vector2 pos = GetMousePosition();
+        if (pos.x > playing->guiOffset) return;
         if (playing->money < 350) return;
         for (int32_t i = 0; i < MAX_TOWERS; i++) {
             if (!playing->towers[i].active) {
@@ -77,6 +83,24 @@ void drawGui(GameManager *gm) {
     Playing* p = &gm->playing;
 
     DrawRectangle(p->guiOffset, 0, p->guiWidth, gm->screenHeight, GRAY);
+    
+    // Towers 
+    int32_t boxWidth = 100;
+    int32_t offset1 = p->guiOffset + 20;
+    int32_t offset2 = p->guiOffset + boxWidth + 50;
+
+    int32_t offsetY = 20;
+    for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
+        int32_t offset = (i % 2 == 0) ? offset1 : offset2;
+        if (i != 0 && i % 2 == 0) offsetY += boxWidth + 20;
+
+        DrawRectangle(offset, offsetY, boxWidth, boxWidth, DARKGRAY);
+        DrawTexturePro(p->towerTex[i], 
+                        (Rectangle){offset + 5, offsetY + 5, p->towerTex->width, p->towerTex->height},
+                        (Rectangle){offset + 5, offsetY + 5, boxWidth - 10, boxWidth - 10},
+                        (Vector2){0, 0}, 0, WHITE);
+    }
+    
     DrawText(TextFormat("Money: %d", p->money), 10, 10, 20, RAYWHITE);
     DrawText(TextFormat("Health: %d", p->health), 10, 40,  20, RAYWHITE);
 }

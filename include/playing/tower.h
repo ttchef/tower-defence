@@ -12,6 +12,9 @@
 typedef enum {
     ROCK,
     PLANT,
+    MOUNTAIN,
+
+    TOWER_TYPE_NUM,
 } TowerType;
 
 typedef struct Tower {

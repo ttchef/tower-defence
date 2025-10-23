@@ -23,6 +23,13 @@ Tower placeTower(TowerType type, Vector2 pos) {
             t.damage = 50.0f;
             t.price = 400;
             break;
+        case MOUNTAIN:
+            t.radius = 250.0f;
+            t.cooldown = 5.0f;
+            t.damage = 300.0f;
+            t.price = 1200;
+        case TOWER_TYPE_NUM:
+            break;
     };
     return t;
 }
