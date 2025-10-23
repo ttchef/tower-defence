@@ -12,6 +12,7 @@ Enemy spawnEnemy() {
         .interpolate = 0.0f,
         .pointsIndex = -1,
         .speed = 150.0f,
+        .size = 10,
     };
 }
 
@@ -50,6 +51,6 @@ void updateEnemy(GameManager *gm, Enemy *enemy) {
 }
 
 void drawEnemy(Enemy *enemy) {
-    DrawCircle(enemy->pos.x, enemy->pos.y, 10, BLUE);    
+        DrawCircle(enemy->pos.x, enemy->pos.y, enemy->size, BLUE);    
 }
 

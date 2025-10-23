@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "definies.h"
 #include "playing/playing.h"
+#include <raylib.h>
 
 int32_t pushGameState(GameManager *game, GameState state) {
     StateStack* stack = &game->states;
@@ -26,6 +27,7 @@ GameState* getCurrentState(GameManager* game) {
 int32_t initGame(GameManager* game) {
 
     srand(time(NULL));
+    SetConfigFlags(FLAG_MSAA_4X_HINT);
     InitWindow(800, 600, "Tower-Defence");
     SetTargetFPS(60);
 

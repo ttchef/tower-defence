@@ -11,6 +11,7 @@ typedef struct {
     float interpolate;
     int32_t pointsIndex;
     float speed;
+    int32_t size;
     Vector2 pos;
 } Enemy;
 

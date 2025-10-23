@@ -41,7 +41,10 @@ void handlePlayingInput(GameManager* gm) {
 void updatePlaying(GameManager* gm) {
     Playing* playing = &gm->playing;
     for (int32_t i = 0; i < MAX_ENEMIES; i++) {
-        updateEnemy(gm, &playing->enemies[i]);
+        if (gm->playing.enemies[i].active) updateEnemy(gm, &playing->enemies[i]);
+    }
+    for (int32_t i = 0; i < MAX_TOWERS; i++) {
+        if (gm->playing.towers[i].active) updateTower(&gm->playing.towers[i], gm->playing.enemies);
     }
 }
 

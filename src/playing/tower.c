@@ -1,5 +1,6 @@
 
 #include "playing/tower.h"
+#include "playing/enemy.h"
 #include <raylib.h>
 
 Tower placeTower(Vector2 pos) {
@@ -8,6 +9,18 @@ Tower placeTower(Vector2 pos) {
         .pos = pos,
         .radius = 150.0f,
     };
+}
+
+void updateTower(Tower *tower, Enemy* enemies) {
+    for (int32_t i = 0;i < MAX_ENEMIES; i++) {
+        if (!enemies[i].active) continue;
+
+        // is in range?
+        float diff = Vector2Distance(tower->pos, enemies[i].pos);
+        if (diff <= tower->radius + enemies[i].size) {
+            enemies[i].active = false;
+        }
+    }
 }
 
 void drawTower(Tower *tower) {
