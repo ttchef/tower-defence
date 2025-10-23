@@ -12,6 +12,7 @@ typedef struct Projectile  {
     float speed;
     bool active;
     float interpolate;
+    int32_t size;
 } Projectile;
 
 Projectile spawnProjectile(Vector2 pos, int32_t index);
