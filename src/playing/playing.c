@@ -8,6 +8,15 @@
 #include "playing/tower.h"
 #include <raylib.h>
 
+const char* towerNames[TOWER_TYPE_NUM] = {
+    "Rock",
+    "Plant",
+    "Mountain",
+};
+
+Tower towerProto[TOWER_TYPE_NUM];
+
+
 void initPlaying(GameManager* gm) {
     Playing* playing = &gm->playing;
     playing->guiWidth = 300;
@@ -18,12 +27,36 @@ void initPlaying(GameManager* gm) {
     playing->path.end = (Vector2){playing->guiOffset - 50, 50};
     initRandomPath(gm);
 
-    playing->money = 1000;
+    playing->money = 100;
     playing->health = 100;
 
-    playing->towerTex[ROCK] = LoadTexture("res/rock.jpg");
-    playing->towerTex[PLANT] = LoadTexture("res/plant.jpg");
-    playing->towerTex[MOUNTAIN] = LoadTexture("res/mountain.jpg");
+    playing->towerTex[ROCK].tex = LoadTexture("res/rock.jpg");
+    playing->towerTex[PLANT].tex = LoadTexture("res/plant.jpg");
+    playing->towerTex[MOUNTAIN].tex = LoadTexture("res/mountain.jpg");
+
+    // Towers 
+    Playing* p = playing;
+    int32_t boxWidth = 100;
+    int32_t boxHeight = 150;
+    int32_t offset1 = p->guiOffset + 20;
+    int32_t offset2 = p->guiOffset + boxWidth + 50;
+
+    int32_t offsetY = 20;
+    for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
+        int32_t offset = (i % 2 == 0) ? offset1 : offset2;
+        if (i != 0 && i % 2 == 0) offsetY += boxHeight + 20;
+            playing->towerTex[i].pos.x = offset;
+            playing->towerTex[i].pos.y = offsetY;
+            playing->towerTex[i].width = boxWidth;
+            playing->towerTex[i].height = boxHeight;
+    }
+
+    playing->currentTower = ROCK;
+
+    // Init towerProto
+    for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
+        towerProto[i] = placeTower(i, (Vector2){0, 0});
+    }
 }
 
 void handlePlayingInput(GameManager* gm) {
@@ -31,18 +64,42 @@ void handlePlayingInput(GameManager* gm) {
     if (IsKeyPressed(KEY_L)) {
         for (int32_t i = 0; i < MAX_ENEMIES; i++) {
             if (!playing->enemies[i].active) {
-                playing->enemies[i] = spawnEnemy();
+                playing->enemies[i] = spawnEnemy(GOBLIN);
                 break;
             }
         }
     }
+    if (IsKeyPressed(KEY_K)) {
+        for (int32_t i = 0; i < MAX_ENEMIES; i++) {
+            if (!playing->enemies[i].active) {
+                playing->enemies[i] = spawnEnemy(GOLEM);
+                break;
+            }
+        }
+    }
+
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
+    
+        for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
+            TowerTexturePos t = playing->towerTex[i];
+             
+            if (pos.x >= t.pos.x &&
+                pos.x < t.pos.x + t.width &&
+                pos.y >= t.pos.y &&
+                pos.y < t.pos.y + t.height) {
+                playing->currentTower = i;
+            }
+        }
+
         if (pos.x > playing->guiOffset) return;
-        if (playing->money < 350) return;
         for (int32_t i = 0; i < MAX_TOWERS; i++) {
             if (!playing->towers[i].active) {
-                playing->towers[i] = placeTower(ROCK, GetMousePosition());
+                playing->towers[i] = placeTower(playing->currentTower, GetMousePosition());
+                if (!(playing->money >= playing->towers[i].price)) {
+                    playing->towers[i].active = false;
+                    break;
+                }
                 playing->money -= playing->towers[i].price;
                 break;
             }
@@ -85,20 +142,28 @@ void drawGui(GameManager *gm) {
     DrawRectangle(p->guiOffset, 0, p->guiWidth, gm->screenHeight, GRAY);
     
     // Towers 
-    int32_t boxWidth = 100;
-    int32_t offset1 = p->guiOffset + 20;
-    int32_t offset2 = p->guiOffset + boxWidth + 50;
-
-    int32_t offsetY = 20;
     for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
-        int32_t offset = (i % 2 == 0) ? offset1 : offset2;
-        if (i != 0 && i % 2 == 0) offsetY += boxWidth + 20;
-
-        DrawRectangle(offset, offsetY, boxWidth, boxWidth, DARKGRAY);
-        DrawTexturePro(p->towerTex[i], 
-                        (Rectangle){offset + 5, offsetY + 5, p->towerTex->width, p->towerTex->height},
-                        (Rectangle){offset + 5, offsetY + 5, boxWidth - 10, boxWidth - 10},
+        TowerTexturePos t = p->towerTex[i];
+        DrawRectangle(t.pos.x, t.pos.y, t.width, t.height, DARKGRAY);
+        DrawTexturePro(t.tex, 
+                        (Rectangle){t.pos.x + 5, t.pos.y + 5, t.tex.width, t.tex.height},
+                        (Rectangle){t.pos.x + 5, t.pos.y + 5, t.width - 10, t.width - 10},
                         (Vector2){0, 0}, 0, WHITE);
+        const char* text = TextFormat("%s: %d$", towerNames[i], towerProto[i].price);
+        int32_t fontSize = 18;
+        while (MeasureText(text, fontSize) >= t.width - 20) {
+            fontSize--;
+        }
+        
+        if (fontSize < 15) {
+            const char* name = TextFormat("%s", towerNames[i]);
+            const char* price = TextFormat("%d$", towerProto[i].price);
+            DrawText(name, t.pos.x + 10, t.pos.y + t.height / 1.4, 18, WHITE);
+            DrawText(price, t.pos.x + + t.width / 2 - 10, t.pos.y + t.height / 1.2, 18, WHITE);
+        }
+        else {
+            DrawText(text, t.pos.x + 10, t.pos.y + t.height / 1.3, fontSize, WHITE);
+        }
     }
     
     DrawText(TextFormat("Money: %d", p->money), 10, 10, 20, RAYWHITE);

@@ -13,9 +13,12 @@ typedef struct Projectile  {
     bool active;
     float interpolate;
     int32_t size;
+    int32_t damage;
+    bool areaOFEffect;
+    int32_t explosionRadius;
 } Projectile;
 
-Projectile spawnProjectile(Vector2 pos, int32_t index);
+Projectile spawnProjectile(Vector2 pos, int32_t index, int32_t damage, int32_t explosionRadius);
 void updateProjectile(Projectile* proj, Enemy* enemies, float dt, GameManager* gm);
 void drawProjectile(Projectile* proj);
 

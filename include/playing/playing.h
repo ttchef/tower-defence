@@ -9,6 +9,13 @@
 #include "playing/tower.h"
 
 typedef struct {
+    Texture2D tex;
+    Vector2 pos;
+    int32_t width;
+    int32_t height;
+} TowerTexturePos;
+
+typedef struct {
     Path path;
     Enemy enemies[MAX_ENEMIES];
     Tower towers[MAX_TOWERS];
@@ -19,7 +26,8 @@ typedef struct {
     int32_t guiOffset;
     int32_t guiWidth;
 
-    Texture2D towerTex[TOWER_TYPE_NUM];
+    int32_t currentTower;
+    TowerTexturePos towerTex[TOWER_TYPE_NUM];
 } Playing;
 
 void initPlaying(GameManager* gm);

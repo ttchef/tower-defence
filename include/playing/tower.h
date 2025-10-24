@@ -17,6 +17,7 @@ typedef enum {
     TOWER_TYPE_NUM,
 } TowerType;
 
+
 typedef struct Tower {
     TowerType type;
     bool active;
@@ -26,6 +27,8 @@ typedef struct Tower {
     float sleep;
     float damage;
     int32_t price;
+    bool areaOfEffect;
+    int32_t explosionRadius;
 } Tower;
 
 Tower placeTower(TowerType tower, Vector2 pos);

@@ -15,19 +15,23 @@ Tower placeTower(TowerType type, Vector2 pos) {
             t.radius = 100.0f;
             t.cooldown = 1.0f;
             t.damage = 100.0f;
-            t.price = 350;
+            t.price = 40;
+            t.areaOfEffect = false;
             break;
         case PLANT:
             t.radius = 175.0f;
-            t.cooldown = 0.0f;
-            t.damage = 50.0f;
-            t.price = 400;
+            t.cooldown = 0.5f;
+            t.damage = 70.0f;
+            t.price = 70;
+            t.areaOfEffect = false;
             break;
         case MOUNTAIN:
             t.radius = 250.0f;
-            t.cooldown = 5.0f;
+            t.cooldown = 4.0f;
             t.damage = 300.0f;
-            t.price = 1200;
+            t.price = 170;
+            t.areaOfEffect = true;
+            t.explosionRadius = 100.0f;
         case TOWER_TYPE_NUM:
             break;
     };
@@ -46,7 +50,7 @@ void updateTower(Tower *tower, Enemy* enemies, Projectile* proj) {
         if (diff <= tower->radius + enemies[i].size) {
             for (int32_t j = 0; j < MAX_PROJECTILES; j++) {
                 if (!proj[j].active) {
-                    proj[j] = spawnProjectile(tower->pos, i);
+                    proj[j] = spawnProjectile(tower->pos, i, tower->damage, tower->explosionRadius);
                     break;
                 }
             }
