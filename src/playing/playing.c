@@ -232,9 +232,19 @@ void drawGuiTowerDisplay(GameManager *gm) {
 }
 
 void drawGuiTowerStats(GameManager *gm) {
-    int32_t top = gm->states.top;
-    top++;
-}
+    Playing* p = &gm->playing;
+
+    // Draw Tower Type
+    int32_t outerWidth = p->guiWidth * 0.75f;
+    int32_t border = 10;
+    int32_t offsetY = gm->screenHeight * 0.05f;
+    int32_t posX = p->guiOffset + (p->guiWidth - outerWidth) / 2;
+    DrawRectangle(posX, offsetY, outerWidth, outerWidth, DARKGRAY);
+    TowerTexturePos t = p->towerTex[p->towers[p->selectedTower].type];
+    DrawTexturePro(t.tex,
+                (Rectangle){0, 0, t.tex.width, t.tex.height},
+                (Rectangle){posX + border, offsetY + border, outerWidth - border * 2, outerWidth - border * 2}, (Vector2){0, 0}, 0, WHITE);
+}   
 
 void drawGui(GameManager* gm) {
     Playing* p = &gm->playing;    
