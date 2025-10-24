@@ -29,6 +29,7 @@ typedef struct Tower {
     int32_t price;
     bool areaOfEffect;
     int32_t explosionRadius;
+    int32_t size;
 } Tower;
 
 Tower placeTower(TowerType tower, Vector2 pos);

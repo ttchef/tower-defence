@@ -15,6 +15,11 @@ typedef struct {
     int32_t height;
 } TowerTexturePos;
 
+typedef enum {
+    GUI_STATE_TOWER_DISPLAY,
+    GUI_STATE_TOWER_STATS,
+} PlayingGuiState;
+
 typedef struct {
     Path path;
     Enemy enemies[MAX_ENEMIES];
@@ -28,6 +33,7 @@ typedef struct {
 
     int32_t selectedTower;
     int32_t currentTower;
+    PlayingGuiState guiState;
     TowerTexturePos towerTex[TOWER_TYPE_NUM];
 } Playing;
 
@@ -36,6 +42,8 @@ void handlePlayingInput(GameManager* gm);
 void updatePlaying(GameManager* gm, float dt);
 void drawPlaying(GameManager* gm);
 void drawGui(GameManager* gm);
+void drawGuiTowerDisplay(GameManager* gm);
+void drawGuiTowerStats(GameManager* gm);
 
 #endif
 

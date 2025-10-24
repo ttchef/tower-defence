@@ -7,6 +7,7 @@
 #include "playing/projectile.h"
 #include "playing/tower.h"
 #include <raylib.h>
+#include <raymath.h>
 
 const char* towerNames[TOWER_TYPE_NUM] = {
     "Rock",
@@ -45,6 +46,22 @@ void placeTowerCond(Playing* playing, Vector2 pos) {
     }
 }
 
+// returns true if should not place tower
+bool updateSelectedTower(Playing* playing, Vector2 pos) {
+    if (pos.x > playing->guiOffset) return false;
+    // Check if collision with tower
+    for (int32_t i = 0; i < MAX_TOWERS; i++) {
+        if (!playing->towers[i].active) continue;
+        float diff = Vector2Distance(pos, playing->towers[i].pos);
+        if (diff <= playing->towers[i].size) {
+            playing->selectedTower = i;
+            playing->guiState = GUI_STATE_TOWER_STATS;
+            return true;
+        }
+    }
+    return false;
+}
+
 void initPlaying(GameManager* gm) {
     Playing* playing = &gm->playing;
     playing->guiWidth = 300;
@@ -81,6 +98,7 @@ void initPlaying(GameManager* gm) {
 
     playing->currentTower = ROCK;
     playing->selectedTower = -1; // No tower selcted
+    playing->guiState = GUI_STATE_TOWER_DISPLAY;
 
     // Init towerProto
     for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
@@ -106,10 +124,19 @@ void handlePlayingInput(GameManager* gm) {
             }
         }
     }
+    if (IsKeyPressed(KEY_M)) {
+        if (playing->guiState == GUI_STATE_TOWER_STATS) {
+            playing->guiState = GUI_STATE_TOWER_DISPLAY;
+            playing->selectedTower = -1;
+        }
+    }
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
         updateCurrentTower(playing, pos);
+        if (updateSelectedTower(playing, pos)) {
+            return;
+        }
         placeTowerCond(playing, pos);      
    }
 }
@@ -143,11 +170,9 @@ void drawPlaying(GameManager* gm) {
     drawGui(gm);
 }
 
-void drawGui(GameManager *gm) {
+void drawGuiTowerDisplay(GameManager *gm) {
     Playing* p = &gm->playing;
 
-    DrawRectangle(p->guiOffset, 0, p->guiWidth, gm->screenHeight, GRAY);
-    
     // Towers 
     for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
 
@@ -204,5 +229,26 @@ void drawGui(GameManager *gm) {
     
     DrawText(TextFormat("Money: %d", p->money), 10, 10, 20, RAYWHITE);
     DrawText(TextFormat("Health: %d", p->health), 10, 40,  20, RAYWHITE);
+}
+
+void drawGuiTowerStats(GameManager *gm) {
+    int32_t top = gm->states.top;
+    top++;
+}
+
+void drawGui(GameManager* gm) {
+    Playing* p = &gm->playing;    
+
+    DrawRectangle(p->guiOffset, 0, p->guiWidth, gm->screenHeight, GRAY);
+
+    PlayingGuiState state = gm->playing.guiState;
+    switch (state) {
+        case GUI_STATE_TOWER_DISPLAY:
+            drawGuiTowerDisplay(gm);
+            break;
+        case GUI_STATE_TOWER_STATS:
+            drawGuiTowerStats(gm);
+            break;
+    };
 }
 

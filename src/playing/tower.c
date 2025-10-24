@@ -8,6 +8,7 @@ Tower placeTower(TowerType type, Vector2 pos) {
     Tower t = {
         .active = true,
         .pos = pos,
+        .size = 15,
     };
 
     switch (type) {
@@ -65,5 +66,5 @@ void drawTower(Tower *tower) {
     Color inner = (Color){100, 100, 100, 65};
     DrawCircleGradient(tower->pos.x, tower->pos.y, tower->radius, inner, outer);
     DrawCircleLines(tower->pos.x, tower->pos.y, tower->radius, WHITE);
-    DrawCircleGradient(tower->pos.x, tower->pos.y, 15, WHITE, BLACK);
+    DrawCircleGradient(tower->pos.x, tower->pos.y, tower->size, WHITE, BLACK);
 }
