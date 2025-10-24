@@ -143,27 +143,55 @@ void drawGui(GameManager *gm) {
     
     // Towers 
     for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
+
         TowerTexturePos t = p->towerTex[i];
+
+        // Draw Bounding Box and texture
         DrawRectangle(t.pos.x, t.pos.y, t.width, t.height, DARKGRAY);
         DrawTexturePro(t.tex, 
                         (Rectangle){t.pos.x + 5, t.pos.y + 5, t.tex.width, t.tex.height},
                         (Rectangle){t.pos.x + 5, t.pos.y + 5, t.width - 10, t.width - 10},
                         (Vector2){0, 0}, 0, WHITE);
-        const char* text = TextFormat("%s: %d$", towerNames[i], towerProto[i].price);
-        int32_t fontSize = 18;
-        while (MeasureText(text, fontSize) >= t.width - 20) {
+
+        // Text
+        int32_t height = t.height - t.width;
+        int32_t paddingX = t.width * 0.1f;
+
+        // Draw Name
+        const char* name = towerNames[i];
+        int32_t fontSize = height / 2;
+        int32_t nameWidth = MeasureText(name, fontSize);
+
+        // Figure out Name Font Size
+        while (nameWidth >= t.width - paddingX) {
             fontSize--;
+            nameWidth = MeasureText(name, fontSize);
         }
-        
-        if (fontSize < 15) {
-            const char* name = TextFormat("%s", towerNames[i]);
-            const char* price = TextFormat("%d$", towerProto[i].price);
-            DrawText(name, t.pos.x + 10, t.pos.y + t.height / 1.4, 18, WHITE);
-            DrawText(price, t.pos.x + + t.width / 2 - 10, t.pos.y + t.height / 1.2, 18, WHITE);
+
+        int32_t centerDiff = (t.width - nameWidth) / 2;
+        int32_t namePosX = t.pos.x + centerDiff;
+        int32_t yFreeSpace = height - fontSize * 2;
+        int32_t yInc = yFreeSpace / 3;
+        int32_t namePosY = t.pos.y + t.width + yInc;
+        DrawText(name, namePosX, namePosY, fontSize, WHITE);
+
+        // Draw Price
+        const char* price = TextFormat("%d$", towerProto[i].price);
+        fontSize = height / 2;
+        int32_t priceWidth = MeasureText(price, fontSize);
+
+        // Fire out Price Font Size
+        while (priceWidth >= t.width - paddingX) {
+            fontSize--;
+            priceWidth = MeasureText(price, fontSize);
         }
-        else {
-            DrawText(text, t.pos.x + 10, t.pos.y + t.height / 1.3, fontSize, WHITE);
-        }
+
+        centerDiff = (t.width - priceWidth) / 2;
+        int32_t pricePosX = t.pos.x + centerDiff;
+        yFreeSpace = height - fontSize / 2;
+        yInc = yFreeSpace / 3;
+        int32_t pricePosY = namePosY + yInc * 2;
+        DrawText(price, pricePosX, pricePosY, fontSize, WHITE);
     }
     
     DrawText(TextFormat("Money: %d", p->money), 10, 10, 20, RAYWHITE);
