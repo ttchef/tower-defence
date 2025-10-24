@@ -147,9 +147,10 @@ void drawGui(GameManager *gm) {
         TowerTexturePos t = p->towerTex[i];
 
         // Draw Bounding Box and texture
-        DrawRectangle(t.pos.x, t.pos.y, t.width, t.height, DARKGRAY);
+        Color bg = (i == p->currentTower) ? ORANGE : DARKGRAY;
+        DrawRectangle(t.pos.x, t.pos.y, t.width, t.height, bg);
         DrawTexturePro(t.tex, 
-                        (Rectangle){t.pos.x + 5, t.pos.y + 5, t.tex.width, t.tex.height},
+                        (Rectangle){0, 0, t.tex.width, t.tex.height},
                         (Rectangle){t.pos.x + 5, t.pos.y + 5, t.width - 10, t.width - 10},
                         (Vector2){0, 0}, 0, WHITE);
 
