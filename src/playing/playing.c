@@ -16,6 +16,34 @@ const char* towerNames[TOWER_TYPE_NUM] = {
 
 Tower towerProto[TOWER_TYPE_NUM];
 
+void updateCurrentTower(Playing* playing, Vector2 pos) {
+    for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
+        TowerTexturePos t = playing->towerTex[i];
+             
+        if (pos.x >= t.pos.x &&
+            pos.x < t.pos.x + t.width &&
+            pos.y >= t.pos.y &&
+            pos.y < t.pos.y + t.height) {
+            playing->currentTower = i;
+        }
+    }
+}
+
+// Looks if all condisionts are met like enough money
+void placeTowerCond(Playing* playing, Vector2 pos) {
+    if (pos.x > playing->guiOffset) return;
+    for (int32_t i = 0; i < MAX_TOWERS; i++) {
+        if (!playing->towers[i].active) {
+            playing->towers[i] = placeTower(playing->currentTower, GetMousePosition());
+            if (!(playing->money >= playing->towers[i].price)) {
+                playing->towers[i].active = false;
+                break;
+            }
+            playing->money -= playing->towers[i].price;
+            break;
+        }
+    }
+}
 
 void initPlaying(GameManager* gm) {
     Playing* playing = &gm->playing;
@@ -52,6 +80,7 @@ void initPlaying(GameManager* gm) {
     }
 
     playing->currentTower = ROCK;
+    playing->selectedTower = -1; // No tower selcted
 
     // Init towerProto
     for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
@@ -80,31 +109,9 @@ void handlePlayingInput(GameManager* gm) {
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         Vector2 pos = GetMousePosition();
-    
-        for (int32_t i = 0; i < TOWER_TYPE_NUM; i++) {
-            TowerTexturePos t = playing->towerTex[i];
-             
-            if (pos.x >= t.pos.x &&
-                pos.x < t.pos.x + t.width &&
-                pos.y >= t.pos.y &&
-                pos.y < t.pos.y + t.height) {
-                playing->currentTower = i;
-            }
-        }
-
-        if (pos.x > playing->guiOffset) return;
-        for (int32_t i = 0; i < MAX_TOWERS; i++) {
-            if (!playing->towers[i].active) {
-                playing->towers[i] = placeTower(playing->currentTower, GetMousePosition());
-                if (!(playing->money >= playing->towers[i].price)) {
-                    playing->towers[i].active = false;
-                    break;
-                }
-                playing->money -= playing->towers[i].price;
-                break;
-            }
-        }
-    }
+        updateCurrentTower(playing, pos);
+        placeTowerCond(playing, pos);      
+   }
 }
 
 void updatePlaying(GameManager* gm, float dt) {

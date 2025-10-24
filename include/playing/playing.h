@@ -26,6 +26,7 @@ typedef struct {
     int32_t guiOffset;
     int32_t guiWidth;
 
+    int32_t selectedTower;
     int32_t currentTower;
     TowerTexturePos towerTex[TOWER_TYPE_NUM];
 } Playing;
