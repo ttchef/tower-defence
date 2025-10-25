@@ -244,6 +244,17 @@ void drawGuiTowerStats(GameManager *gm) {
     DrawTexturePro(t.tex,
                 (Rectangle){0, 0, t.tex.width, t.tex.height},
                 (Rectangle){posX + border, offsetY + border, outerWidth - border * 2, outerWidth - border * 2}, (Vector2){0, 0}, 0, WHITE);
+    
+    // TEMP Stats 
+    // TODO Make look prettier
+    Tower* tower = &p->towers[p->selectedTower];
+    int32_t inc = 30;
+    offsetY += outerWidth + inc;
+    DrawText(TextFormat("Radius: %.1f", tower->radius), posX, offsetY, 20, WHITE);
+    offsetY += inc;
+    DrawText(TextFormat("Cooldown: %.1f", tower->cooldown), posX, offsetY, 20, WHITE);
+    offsetY += inc;
+    DrawText(TextFormat("Damage: %.1f", tower->damage), posX, offsetY, 20, WHITE);
 }   
 
 void drawGui(GameManager* gm) {
