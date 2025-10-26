@@ -1,5 +1,7 @@
 
+#include "GameManager.h"
 #include "playing/tower.h"
+#include "definies.h"
 #include "playing/enemy.h"
 #include "playing/projectile.h"
 #include <raylib.h>
@@ -9,6 +11,7 @@ Tower placeTower(TowerType type, Vector2 pos) {
         .active = true,
         .pos = pos,
         .size = 15,
+        .attack = true,
     };
 
     switch (type) {
@@ -33,16 +36,33 @@ Tower placeTower(TowerType type, Vector2 pos) {
             t.price = 170;
             t.areaOfEffect = true;
             t.explosionRadius = 100.0f;
+            break;
+        case MINE:
+            t.attack = false;
+            t.price = 150;
+            t.money = 10;
+            t.moneyCooldown = 1.0f;
+            break;
         case TOWER_TYPE_NUM:
             break;
     };
     return t;
 }
 
-void updateTower(Tower *tower, Enemy* enemies, Projectile* proj) {
+void updateTower(Tower *tower, Enemy* enemies, Projectile* proj, GameManager* gm) {
+    Playing* p = &gm->playing;
+
+    if (!tower->attack) {
+        tower->moneySleep += GetFrameTime();
+        if (tower->moneySleep >= tower->moneyCooldown) {
+            p->money += tower->money;
+            tower->moneySleep = 0.0f;
+            return;
+        }
+    }
+
     tower->sleep += GetFrameTime();
     if (tower->sleep < tower->cooldown) return;
-
     for (int32_t i = 0;i < MAX_ENEMIES; i++) {
         if (!enemies[i].active) continue;
 

@@ -13,6 +13,7 @@ typedef enum {
     ROCK,
     PLANT,
     MOUNTAIN,
+    MINE,
 
     TOWER_TYPE_NUM,
 } TowerType;
@@ -30,10 +31,14 @@ typedef struct Tower {
     bool areaOfEffect;
     int32_t explosionRadius;
     int32_t size;
+    int32_t money;
+    float moneyCooldown;
+    float moneySleep;
+    bool attack;
 } Tower;
 
 Tower placeTower(TowerType tower, Vector2 pos);
-void updateTower(Tower* tower, Enemy* enemis, Projectile* proj);
+void updateTower(Tower* tower, Enemy* enemis, Projectile* proj, GameManager* gm);
 void drawTower(Tower* tower);
 
 

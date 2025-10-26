@@ -13,6 +13,7 @@ const char* towerNames[TOWER_TYPE_NUM] = {
     "Rock",
     "Plant",
     "Mountain",
+    "Mine",
 };
 
 Tower towerProto[TOWER_TYPE_NUM];
@@ -72,12 +73,13 @@ void initPlaying(GameManager* gm) {
     playing->path.end = (Vector2){playing->guiOffset - 50, 50};
     initRandomPath(gm);
 
-    playing->money = 100;
+    playing->money = 150;
     playing->health = 100;
 
     playing->towerTex[ROCK].tex = LoadTexture("res/rock.jpg");
     playing->towerTex[PLANT].tex = LoadTexture("res/plant.jpg");
     playing->towerTex[MOUNTAIN].tex = LoadTexture("res/mountain.jpg");
+    playing->towerTex[MINE].tex = LoadTexture("res/mine.jpg");
 
     // Towers 
     Playing* p = playing;
@@ -147,7 +149,7 @@ void updatePlaying(GameManager* gm, float dt) {
         if (gm->playing.enemies[i].active) updateEnemy(gm, &playing->enemies[i]);
     }
     for (int32_t i = 0; i < MAX_TOWERS; i++) {
-        if (gm->playing.towers[i].active) updateTower(&gm->playing.towers[i], gm->playing.enemies, playing->proj);
+        if (gm->playing.towers[i].active) updateTower(&gm->playing.towers[i], gm->playing.enemies, playing->proj, gm);
     }
     for (int32_t i = 0; i < MAX_PROJECTILES; i++) {
         if (gm->playing.proj[i].active) updateProjectile(&playing->proj[i], playing->enemies, dt, gm);
