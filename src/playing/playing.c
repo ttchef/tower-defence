@@ -126,7 +126,7 @@ void handlePlayingInput(GameManager* gm) {
             }
         }
     }
-    if (IsKeyPressed(KEY_M)) {
+    if (IsKeyPressed(KEY_ESCAPE)) {
         if (playing->guiState == GUI_STATE_TOWER_STATS) {
             playing->guiState = GUI_STATE_TOWER_DISPLAY;
             playing->selectedTower = -1;
@@ -163,7 +163,10 @@ void drawPlaying(GameManager* gm) {
     }
 
     for (int32_t i = 0; i < MAX_TOWERS; i++) {
-        if (gm->playing.towers[i].active) drawTower(&gm->playing.towers[i]);
+        if (gm->playing.towers[i].active) {
+            bool selected = (i == gm->playing.selectedTower) ? true : false;
+            drawTower(&gm->playing.towers[i], selected);
+        }
     }
     for (int32_t i = 0; i < MAX_PROJECTILES; i++) {
         if (gm->playing.proj[i].active) drawProjectile(&gm->playing.proj[i]);

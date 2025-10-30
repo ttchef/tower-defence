@@ -10,7 +10,7 @@ int main() {
 
     gm->states.top = pushGameState(gm, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
 
-    while (!WindowShouldClose()) {
+    while (true) {
         gm->deltaTime = GetFrameTime();
         GameState* currentState = getCurrentState(gm);
         gm->screenWidth = GetScreenWidth();
@@ -19,7 +19,7 @@ int main() {
         currentState->update(gm, gm->deltaTime);
 
         BeginDrawing();
-            ClearBackground(DARKGREEN);
+            ClearBackground(DARKGREEN);  
             currentState->draw(gm);
         EndDrawing();
             

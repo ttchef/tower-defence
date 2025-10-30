@@ -21,6 +21,7 @@ Tower placeTower(TowerType type, Vector2 pos) {
             t.damage = 100.0f;
             t.price = 40;
             t.areaOfEffect = false;
+            t.type = ROCK;
             break;
         case PLANT:
             t.radius = 175.0f;
@@ -28,6 +29,7 @@ Tower placeTower(TowerType type, Vector2 pos) {
             t.damage = 70.0f;
             t.price = 70;
             t.areaOfEffect = false;
+            t.type = PLANT;
             break;
         case MOUNTAIN:
             t.radius = 250.0f;
@@ -36,12 +38,14 @@ Tower placeTower(TowerType type, Vector2 pos) {
             t.price = 170;
             t.areaOfEffect = true;
             t.explosionRadius = 100.0f;
+            t.type = MOUNTAIN;
             break;
         case MINE:
             t.attack = false;
             t.price = 150;
             t.money = 10;
             t.moneyCooldown = 1.0f;
+            t.type = MINE;
             break;
         case TOWER_TYPE_NUM:
             break;
@@ -81,10 +85,14 @@ void updateTower(Tower *tower, Enemy* enemies, Projectile* proj, GameManager* gm
     }
 }
 
-void drawTower(Tower *tower) {
+void drawTower(Tower *tower, bool selected) {
     Color outer = (Color){255, 255, 255, 80};
     Color inner = (Color){100, 100, 100, 65};
-    DrawCircleGradient(tower->pos.x, tower->pos.y, tower->radius, inner, outer);
-    DrawCircleLines(tower->pos.x, tower->pos.y, tower->radius, WHITE);
+
+    // Range
+    if (selected) {
+        DrawCircleGradient(tower->pos.x, tower->pos.y, tower->radius, inner, outer);
+        DrawCircleLines(tower->pos.x, tower->pos.y, tower->radius, WHITE);
+    }
     DrawCircleGradient(tower->pos.x, tower->pos.y, tower->size, WHITE, BLACK);
 }
