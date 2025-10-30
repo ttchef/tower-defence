@@ -2,15 +2,13 @@
 #ifndef MANAGER_H
 #define MANAGER_H
 
-#include <stdint.h>
-#include <stdbool.h>
+#include "definies.h"
+#include "file.h"
 
 #define MAX_GAME_STATES 10
 
-typedef struct Manager Manager;
-
-typedef enum GuiStateType {
-    STATE_FILE,
+typedef enum StateType {
+    PROGRAM_STATE_FILE,
 } StateType;
 
 typedef struct State{
