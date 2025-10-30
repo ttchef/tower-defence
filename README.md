@@ -8,3 +8,6 @@ THIS CODE IS VERY SHIT AT THE MOMEMT BECAUSE IM TESTING
 # Dependencies
  - raylib 
  - raygui
+
+Submodules
+ - tinyfiledialogs
