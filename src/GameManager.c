@@ -34,6 +34,7 @@ int32_t initGame(GameManager* game) {
     srand(time(NULL));
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE);
     InitWindow(game->screenWidth, game->screenHeight, "Tower-Defence");
+    SetExitKey(KEY_F);
     SetTargetFPS(60);
 
     initPlaying(game);

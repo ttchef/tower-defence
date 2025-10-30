@@ -10,7 +10,7 @@ int main() {
 
     gm->states.top = pushGameState(gm, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
 
-    while (true) {
+    while (!WindowShouldClose()) {
         gm->deltaTime = GetFrameTime();
         GameState* currentState = getCurrentState(gm);
         gm->screenWidth = GetScreenWidth();
