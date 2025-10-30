@@ -18,7 +18,6 @@ typedef enum {
     TOWER_TYPE_NUM,
 } TowerType;
 
-
 typedef struct Tower {
     TowerType type;
     bool active;
@@ -39,7 +38,7 @@ typedef struct Tower {
 
 Tower placeTower(TowerType tower, Vector2 pos);
 void updateTower(Tower* tower, Enemy* enemis, Projectile* proj, GameManager* gm);
-void drawTower(Tower* tower);
+void drawTower(Tower* tower, bool selected);
 
 
 #endif
