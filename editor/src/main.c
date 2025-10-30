@@ -1,5 +1,9 @@
 
 #include <raylib.h>
+
+#define RAYGUI_IMPLEMENTATION
+#include <raygui.h>
+
 #include <stdint.h>
 
 #include "Manager.h"
