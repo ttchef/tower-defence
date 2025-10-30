@@ -76,10 +76,10 @@ void initPlaying(GameManager* gm) {
     playing->money = 150;
     playing->health = 100;
 
-    playing->towerTex[ROCK].tex = LoadTexture("res/rock.jpg");
-    playing->towerTex[PLANT].tex = LoadTexture("res/plant.jpg");
-    playing->towerTex[MOUNTAIN].tex = LoadTexture("res/mountain.jpg");
-    playing->towerTex[MINE].tex = LoadTexture("res/mine.jpg");
+    playing->towerTex[ROCK].tex = LoadTexture("res/images/rock.jpg");
+    playing->towerTex[PLANT].tex = LoadTexture("res/images/plant.jpg");
+    playing->towerTex[MOUNTAIN].tex = LoadTexture("res/images/mountain.jpg");
+    playing->towerTex[MINE].tex = LoadTexture("res/images/mine.jpg");
 
     // Towers 
     Playing* p = playing;

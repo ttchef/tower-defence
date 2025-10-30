@@ -3,7 +3,7 @@ CC = gcc
 
 CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpedantic -g -O0 -fsanitize=address -fsanitize=undefined -std=c99
 CFLAGS_RELEASE = -O2
-CFLAGS = -Iinclude -Ivendor $(CFLAGS_DEBUG)
+CFLAGS = -Iinclude -I../vendor $(CFLAGS_DEBUG)
 
 LDFLAGS = -lraylib -lm
 
