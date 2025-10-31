@@ -4,8 +4,14 @@
 #include "Manager.h"
 
 void updateMapState(Manager *manager) {
-    int32_t w = manager->guiHeight;
-    w++;
+    MapState* m = &manager->map;
+    FILE* fd = fopen(manager->file.filepath, "r+");
+    if (!fd) {
+        fprintf(stderr, "Failed to open map: %s\n", manager->file.filepath);
+        return;
+    }
+    
+
 }
 
 void drawMap(Manager* manager) {
@@ -33,5 +39,10 @@ void drawMapStateGui(Manager* manager) {
 void drawMapState(Manager *manager) {
     drawMap(manager);
     drawMapStateGui(manager);
+}
+
+void deinitMapState(Manager *manager) {
+    int32_t window = manager->windowHeight;
+    window++;
 }
 

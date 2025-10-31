@@ -1,3 +1,6 @@
 [submodule "vendor/tinyfiledialogs"]
 	path = vendor/tinyfiledialogs
 	url = https://git.code.sf.net/p/tinyfiledialogs/code
+[submodule "vendor/wsJson"]
+	path = vendor/wsJson
+	url = https://github.com/ttchef/wsJson.git

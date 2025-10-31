@@ -10,7 +10,6 @@ typedef struct FileState {
     bool mapOpen;
     bool newMap;
     char filepath[MAX_FILE_PATH];
-    FILE* fd;
 } FileState;
 
 void updateFileState(Manager* manager);

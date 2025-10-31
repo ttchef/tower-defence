@@ -1,5 +1,7 @@
 
 #include "Manager.h"
+#include "file.h"
+#include "map.h"
 
 int32_t pushState(Manager *manager, State state) {
     StateStack* stack = &manager->stateHandler;
@@ -19,5 +21,9 @@ int32_t popState(Manager *manager) {
 State* getCurrentState(Manager* manager) {
     StateStack* stack = &manager->stateHandler;
     return &stack->states[stack->top];
+}
+
+void deinit(Manager *manager) {
+    deinitMapState(manager);
 }
 

@@ -40,7 +40,7 @@ void drawFileStateGui(Manager* manager) {
                 fprintf(stderr, "Failed to open map!\n");
                 return;
             }
-            manager->file.fd = file;
+            fclose(file);
         }
     }
 
@@ -57,7 +57,7 @@ void drawFileStateGui(Manager* manager) {
                 fprintf(stderr, "Failed to create new map!\n");
                 return;
             }
-            manager->file.fd = file;
+            fclose(file);
         }
     }
 
@@ -66,4 +66,6 @@ void drawFileStateGui(Manager* manager) {
 void drawFileState(Manager *manager) {
     drawFileStateGui(manager);
 }
+
+    
 

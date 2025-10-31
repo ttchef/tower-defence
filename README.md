@@ -11,3 +11,4 @@ THIS CODE IS VERY SHIT AT THE MOMEMT BECAUSE IM TESTING
 
 Submodules
  - tinyfiledialogs
+ - wsJson (own lib)

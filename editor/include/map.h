@@ -11,4 +11,6 @@ typedef struct MapState {
 void updateMapState(Manager* manager);
 void drawMapState(Manager* manager);
 
+void deinitMapState(Manager* manager);
+
 #endif

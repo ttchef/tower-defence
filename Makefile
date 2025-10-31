@@ -13,8 +13,12 @@ VENDOR = vendor
 TINY_SRC = $(VENDOR)/tinyfiledialogs/tinyfiledialogs.c
 TINY_OBJ = $(VENDOR)/tinyfiledialogs/tinyfiledialogs.o
 
+# Json parsing
+WSJSON_SRC = $(VENDOR)/wsJson/ws_json.c
+WSJSON_OBJ = $(VENDOR)/wsJson/ws_json.o
+
 SRC_FILES = $(shell find src -name *.c) 
-OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ)
+OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
 
 TARGET = game
 
@@ -28,11 +32,18 @@ build/$(TARGET): $(OBJ_FILES) $(TINY_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
 $(TINY_OBJ): $(TINY_SRC)
-	@echo "@Compiling tinzfiledialogs..."
+	@echo "@Compiling tinyfiledialogs..."
 	$(CC) -c $(TINY_SRC) -o $(TINY_OBJ)
+
+$(WSJSON_OBJ): $(WSJSON_SRC)
+	@echo "@Compiling wsJson..."
+	$(CC) -c $(WSJSON_SRC) -o $(WSJSON_OBJ)
 
 run: clean build/$(TARGET)
 	./build/$(TARGET)
+
+cloc: 
+	cloc . --exclude-dir=vendor
 
 clean:
 	rm -rf $(OBJ_FILES) build

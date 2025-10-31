@@ -40,4 +40,6 @@ int32_t pushState(Manager* manager, State state);
 int32_t popState(Manager* manager);
 State* getCurrentState(Manager* manager);
 
+void deinit(Manager* manager);
+
 #endif
