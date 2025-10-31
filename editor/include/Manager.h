@@ -9,6 +9,7 @@
 
 typedef enum StateType {
     PROGRAM_STATE_FILE,
+    PROGRAM_STATE_MAP,
 } StateType;
 
 typedef struct State{
@@ -29,6 +30,7 @@ struct Manager {
     int32_t guiHeight;
 
     StateStack stateHandler;
+    FileState file;
 };
 
 // ==== State Handling ====

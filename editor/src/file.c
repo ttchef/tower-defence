@@ -1,13 +1,23 @@
 
 #include "file.h"
 #include "Manager.h"
+#include "map.h"
 #include "tinyfiledialogs/tinyfiledialogs.h"
 
-void updateFileState(Manager *manager) {
-    int32_t g = manager->windowHeight;
-    g++;
-}
+#include <string.h>
 
+void updateFileState(Manager *manager) {
+    FileState* f = &manager->file;
+    
+    if (f->mapOpen || f->newMap) {
+        State state = {
+            .type = PROGRAM_STATE_MAP,
+            .update = updateMapState,
+            .draw = drawMapState,
+        };
+        pushState(manager, state);
+    }
+}
 
 void drawFileStateGui(Manager* manager) {
     const int32_t guiOffset = manager->windowWidth - manager->guiWidth;
@@ -22,7 +32,15 @@ void drawFileStateGui(Manager* manager) {
     if (GuiButton((Rectangle){guiOffset + paddingX, currentY, 250, mapButtonHeight}, "Open Map")) {
         const char* filename = tinyfd_openFileDialog("Open File", "", 0, NULL, NULL, 0);
         if (filename) {
-            printf("File: %s\n", filename);
+            manager->file.mapOpen = true;
+            strncpy(manager->file.filepath, filename, MAX_FILE_PATH);
+
+            FILE* file = fopen(manager->file.filepath, "r");
+            if (!file) {
+                fprintf(stderr, "Failed to open map!\n");
+                return;
+            }
+            manager->file.fd = file;
         }
     }
 
@@ -30,7 +48,16 @@ void drawFileStateGui(Manager* manager) {
     if (GuiButton((Rectangle){guiOffset + paddingX, currentY, 250, mapButtonHeight}, "New Map")) {
         const char* filename = tinyfd_saveFileDialog("New Map", "../../res/maps/new.map", 0, NULL, NULL);
         if (filename) {
-            printf("File: %s\n", filename);
+            manager->file.newMap = true;
+            strncpy(manager->file.filepath, filename, MAX_FILE_PATH);
+
+            // Create File
+            FILE* file = fopen(manager->file.filepath, "w");
+            if (!file) {
+                fprintf(stderr, "Failed to create new map!\n");
+                return;
+            }
+            manager->file.fd = file;
         }
     }
 

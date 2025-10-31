@@ -4,8 +4,13 @@
 
 #include "definies.h"
 
+#define MAX_FILE_PATH 100
+
 typedef struct FileState {
-    const char* l;
+    bool mapOpen;
+    bool newMap;
+    char filepath[MAX_FILE_PATH];
+    FILE* fd;
 } FileState;
 
 void updateFileState(Manager* manager);
