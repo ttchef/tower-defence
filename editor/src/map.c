@@ -8,18 +8,30 @@ void updateMapState(Manager *manager) {
     w++;
 }
 
-void drawMapStateGui(Manager* manager) {
-    const int32_t guiOffset = manager->windowWidth - manager->guiWidth;
-    //const int32_t paddingX = 15;
-    //const int32_t paddingY = 15;
-    //int32_t currentY = paddingY;
+void drawMap(Manager* manager) {
+    MapState* m = &manager->map;
+    m->backgroundColor.a = 255;
+    
+    DrawRectangle(0, 0, manager->windowWidth - manager->guiWidth, manager->windowHeight, m->backgroundColor);
+}
 
+void drawMapStateGui(Manager* manager) {
+    MapState* m = &manager->map;
+
+    const int32_t guiOffset = manager->windowWidth - manager->guiWidth;
+    const int32_t paddingX = 15;
+    const int32_t paddingY = 15;
+    const int32_t widthPadding = manager->guiWidth - paddingX * 2;
+    int32_t currentY = paddingY;
+    
     DrawRectangle(guiOffset, 0, manager->guiWidth, manager->guiHeight, DARKGRAY);
 
-
+    GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->backgroundColor);
+    currentY += widthPadding;
 }
 
 void drawMapState(Manager *manager) {
+    drawMap(manager);
     drawMapStateGui(manager);
 }
 

@@ -4,6 +4,7 @@
 
 #include "definies.h"
 #include "file.h"
+#include "map.h"
 
 #define MAX_GAME_STATES 10
 
@@ -31,6 +32,7 @@ struct Manager {
 
     StateStack stateHandler;
     FileState file;
+    MapState map;
 };
 
 // ==== State Handling ====

@@ -5,7 +5,7 @@
 #include "definies.h"
 
 typedef struct MapState {
-    int32_t temp;
+    Color backgroundColor;
 } MapState;
 
 void updateMapState(Manager* manager);
