@@ -3,22 +3,16 @@
 #include "definies.h"
 #include "Manager.h"
 
-void updateMapState(Manager *manager) {
-    MapState* m = &manager->map;
-    FILE* fd = fopen(manager->file.filepath, "r+");
-    if (!fd) {
-        fprintf(stderr, "Failed to open map: %s\n", manager->file.filepath);
-        return;
-    }
-    
-
+void updateMapState(Manager* manager) {
+    int32_t i = manager->guiWidth;
+    i++;
 }
 
 void drawMap(Manager* manager) {
     MapState* m = &manager->map;
-    m->backgroundColor.a = 255;
+    m->map.backgroundColor.a = 255;
     
-    DrawRectangle(0, 0, manager->windowWidth - manager->guiWidth, manager->windowHeight, m->backgroundColor);
+    DrawRectangle(0, 0, manager->windowWidth - manager->guiWidth, manager->windowHeight, m->map.backgroundColor);
 }
 
 void drawMapStateGui(Manager* manager) {
@@ -32,7 +26,7 @@ void drawMapStateGui(Manager* manager) {
     
     DrawRectangle(guiOffset, 0, manager->guiWidth, manager->guiHeight, DARKGRAY);
 
-    GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->backgroundColor);
+    GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->map.backgroundColor);
     currentY += widthPadding;
 }
 

@@ -46,7 +46,7 @@ void drawFileStateGui(Manager* manager) {
 
     currentY += mapButtonHeight + paddingY;
     if (GuiButton((Rectangle){guiOffset + paddingX, currentY, 250, mapButtonHeight}, "New Map")) {
-        const char* filename = tinyfd_saveFileDialog("New Map", "../../res/maps/new.map", 0, NULL, NULL);
+        const char* filename = tinyfd_saveFileDialog("New Map", "../../res/maps/new.json", 0, NULL, NULL);
         if (filename) {
             manager->file.newMap = true;
             strncpy(manager->file.filepath, filename, MAX_FILE_PATH);

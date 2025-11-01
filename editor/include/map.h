@@ -3,9 +3,19 @@
 #define MAP_H
 
 #include "definies.h"
+#include "wsJson/ws_json.h"
+
+typedef struct Map {
+    Color backgroundColor;
+
+    Vector2* pathPoints;
+    int32_t pathPointsCount;
+} Map;
 
 typedef struct MapState {
-    Color backgroundColor;
+    wsJson json;
+    Map map;
+    bool change;
 } MapState;
 
 void updateMapState(Manager* manager);
