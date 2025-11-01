@@ -34,6 +34,7 @@ void updateCurrentTower(Playing* playing, Vector2 pos) {
 // Looks if all condisionts are met like enough money
 void placeTowerCond(Playing* playing, Vector2 pos) {
     if (pos.x > playing->guiOffset) return;
+    if (playing->guiState != GUI_STATE_TOWER_DISPLAY) return;
     for (int32_t i = 0; i < MAX_TOWERS; i++) {
         if (!playing->towers[i].active) {
             playing->towers[i] = placeTower(playing->currentTower, GetMousePosition());

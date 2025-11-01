@@ -14,8 +14,8 @@ TINY_SRC = $(VENDOR)/tinyfiledialogs/tinyfiledialogs.c
 TINY_OBJ = $(VENDOR)/tinyfiledialogs/tinyfiledialogs.o
 
 # Json parsing
-WSJSON_SRC = $(VENDOR)/wsJson/ws_json.c
-WSJSON_OBJ = $(VENDOR)/wsJson/ws_json.o
+WSJSON_SRC = $(VENDOR)/wsJson/src/ws_json.c
+WSJSON_OBJ = $(VENDOR)/wsJson/src/ws_json.o
 
 SRC_FILES = $(shell find src -name *.c) 
 OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
@@ -37,7 +37,7 @@ $(TINY_OBJ): $(TINY_SRC)
 
 $(WSJSON_OBJ): $(WSJSON_SRC)
 	@echo "@Compiling wsJson..."
-	$(CC) -c $(WSJSON_SRC) -o $(WSJSON_OBJ)
+	$(CC) -c $(WSJSON_SRC) -o $(WSJSON_OBJ) -I$(VENDOR)/wsJson/include/wsJson
 
 run: clean build/$(TARGET)
 	./build/$(TARGET)

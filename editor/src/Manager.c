@@ -3,6 +3,7 @@
 #include "definies.h"
 #include "file.h"
 #include "map.h"
+#include "menuBar.h"
 
 int32_t pushState(Manager *manager, State state) {
     StateStack* stack = &manager->stateHandler;
@@ -28,7 +29,7 @@ void managerInit(Manager* manager) {
     memset(manager, 0, sizeof(Manager));
 
     // Top Menu
-    manager->bar.height = 24;
+    manager->bar.height = 40;
 
     // Gui
     manager->guiWidth = 300;
@@ -45,6 +46,8 @@ void managerInit(Manager* manager) {
     // Camera
     manager->camera.offset = (Vector2){0, manager->bar.height};
     manager->camera.zoom = 1;
+
+    initMneuBar(manager);
 }
 
 void managerDeinit(Manager *manager) {
