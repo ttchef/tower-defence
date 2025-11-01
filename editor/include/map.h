@@ -15,7 +15,6 @@ typedef struct Map {
 typedef struct MapState {
     wsJson json;
     Map map;
-    bool change;
 } MapState;
 
 void updateMapState(Manager* manager);

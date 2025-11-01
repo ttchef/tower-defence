@@ -9,12 +9,8 @@
 
 int main() {
 
-    Manager manager = {
-        .windowWidth = 1280,
-        .windowHeight = 780,
-        .guiWidth = 300,
-        .guiHeight = 780,
-    };
+    Manager manager;
+    managerInit(&manager);
 
     State fileState = {
         .type = PROGRAM_STATE_FILE, 
@@ -32,12 +28,20 @@ int main() {
         currentState->update(&manager);
 
         BeginDrawing();
+
             ClearBackground(BLACK);
-            currentState->draw(&manager);;
+            drawMenuBar(&manager);    
+
+            BeginMode2D(manager.camera);
+                currentState->draw(&manager);;
+            EndMode2D();
+
         EndDrawing();
     }
 
     CloseWindow();
+
+    managerDeinit(&manager);
 
     return 0;
 }

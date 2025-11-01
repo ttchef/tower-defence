@@ -5,6 +5,7 @@
 #include "definies.h"
 #include "file.h"
 #include "map.h"
+#include "menuBar.h"
 
 #define MAX_GAME_STATES 10
 
@@ -27,10 +28,14 @@ typedef struct StateStack {
 struct Manager {
     int32_t windowWidth;
     int32_t windowHeight;
+    int32_t mapWidth;
+    int32_t mapHeight;
     int32_t guiWidth;
     int32_t guiHeight;
 
+    Camera2D camera;
     StateStack stateHandler;
+    MenuBar bar;
     FileState file;
     MapState map;
 };
@@ -40,6 +45,7 @@ int32_t pushState(Manager* manager, State state);
 int32_t popState(Manager* manager);
 State* getCurrentState(Manager* manager);
 
-void deinit(Manager* manager);
+void managerInit(Manager* manager);
+void managerDeinit(Manager* manager);
 
 #endif

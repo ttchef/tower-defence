@@ -1,5 +1,6 @@
 
 #include "Manager.h"
+#include "definies.h"
 #include "file.h"
 #include "map.h"
 
@@ -23,7 +24,30 @@ State* getCurrentState(Manager* manager) {
     return &stack->states[stack->top];
 }
 
-void deinit(Manager *manager) {
+void managerInit(Manager* manager) {
+    memset(manager, 0, sizeof(Manager));
+
+    // Top Menu
+    manager->bar.height = 24;
+
+    // Gui
+    manager->guiWidth = 300;
+    manager->guiHeight = 780;
+
+    // Map
+    manager->mapWidth = 1280 - manager->guiWidth;
+    manager->mapHeight = manager->guiHeight;
+
+    // Window
+    manager->windowWidth = manager->mapWidth + manager->guiWidth;
+    manager->windowHeight = manager->mapHeight + manager->bar.height;
+
+    // Camera
+    manager->camera.offset = (Vector2){0, manager->bar.height};
+    manager->camera.zoom = 1;
+}
+
+void managerDeinit(Manager *manager) {
     deinitMapState(manager);
 }
 

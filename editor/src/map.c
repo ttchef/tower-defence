@@ -12,7 +12,7 @@ void drawMap(Manager* manager) {
     MapState* m = &manager->map;
     m->map.backgroundColor.a = 255;
     
-    DrawRectangle(0, 0, manager->windowWidth - manager->guiWidth, manager->windowHeight, m->map.backgroundColor);
+    DrawRectangle(0, 0, manager->mapWidth, manager->mapHeight, m->map.backgroundColor);
 }
 
 void drawMapStateGui(Manager* manager) {
