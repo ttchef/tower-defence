@@ -24,7 +24,7 @@ OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
 OS ?= linux
 
 ifeq ($(OS),windows)
-	LDFLAGS += -lopengl32 -lgdi32 -lwinmn -lole32
+	LDFLAGS += -lopengl32 -lgdi32 -lwinmm -lole32
 endif
 
 BUILD ?= debug 
