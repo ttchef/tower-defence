@@ -61,8 +61,20 @@ void drawMenuBar(Manager *manager) {
                 }
             }
             break;
-        case (1 << 1):
-            printf("Option 2\n");
+        case (1 << 1): {
+                if (manager->map.json) {
+                    // Ask to save map
+                    int32_t save = tinyfd_messageBox("Title", "Message", "yesno", "warning", 1);
+                    if (save) {
+                        saveMap(manager);   
+                    }
+                }
+
+                const char* filepath = tinyfd_openFileDialog("Open Map", "", 0, NULL, NULL, 0);
+                if (filepath) {
+                    openMap(manager, filepath);    
+                }
+            }
             break;
         case (1 << 2):
             saveMap(manager);

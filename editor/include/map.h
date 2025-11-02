@@ -25,6 +25,7 @@ void drawMapStateGui(Manager* manager);
 void deinitMapState(Manager* manager);
 
 void newMap(Manager* manager, const char* filepath);
+void openMap(Manager* manager, const char* filepath);
 void saveMapAs(Manager* manager, const char* filepath);
 void saveMap(Manager* manager);
 

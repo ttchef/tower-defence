@@ -79,8 +79,22 @@ void newMap(Manager *manager, const char *filepath) {
     // print json to file
     char string[WS_BUFFER_SIZE];
     wsJsonToString(m->json, string, WS_BUFFER_SIZE);
-    printf("%s\n", string);
+    //printf("%s\n", string);
     fprintf(file, "%s\n", string);
+    fclose(file);
+}
+
+void openMap(Manager* manager, const char* filepath) {
+    MapState* m = &manager->map;
+
+    FILE* file = fopen(filepath, "r");
+    if (!file) {
+        fprintf(stderr, "Failde to open file: %s\n", filepath);
+        return;
+    }
+
+    if (m->json) wsJsonFree(m->json);
+
     fclose(file);
 }
 
