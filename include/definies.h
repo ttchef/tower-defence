@@ -9,6 +9,10 @@
 #include <time.h>
 #include <string.h>
 
+#ifdef _WIN32
+    #define RAYLIB_NOMAIN
+#endif
+
 #include <raylib.h>
 #include <raymath.h>
 

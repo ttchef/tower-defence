@@ -2,6 +2,10 @@
 #ifndef DEFINIES_H
 #define DEFINIES_H
 
+#ifdef _WIN32
+    #define RAYLIB_NOMAIN
+#endif
+
 #include <raylib.h>
 #include <raygui.h>
 
