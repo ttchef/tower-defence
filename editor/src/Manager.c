@@ -1,7 +1,6 @@
 
 #include "Manager.h"
 #include "definies.h"
-#include "file.h"
 #include "map.h"
 #include "menuBar.h"
 

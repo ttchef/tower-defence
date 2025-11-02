@@ -1,5 +1,4 @@
 
-#include "file.h"
 #include "Manager.h"
 
 #define RAYGUI_IMPLEMENTATION
@@ -12,8 +11,8 @@ int main() {
 
     State fileState = {
         .type = PROGRAM_STATE_FILE, 
-        .update = updateFileState, 
-        .draw = drawFileState,
+        .update = updateMapState, 
+        .draw = drawMapState,
     };
 
     pushState(&manager, fileState);
@@ -28,12 +27,12 @@ int main() {
         BeginDrawing();
 
             ClearBackground(BLACK);
-            drawMenuBar(&manager);    
-
+  
             BeginMode2D(manager.camera);
                 currentState->draw(&manager);;
             EndMode2D();
 
+            drawMenuBar(&manager);  
         EndDrawing();
     }
 

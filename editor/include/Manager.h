@@ -3,7 +3,6 @@
 #define MANAGER_H
 
 #include "definies.h"
-#include "file.h"
 #include "map.h"
 #include "menuBar.h"
 
@@ -36,7 +35,6 @@ struct Manager {
     Camera2D camera;
     StateStack stateHandler;
     MenuBar bar;
-    FileState file;
     MapState map;
 };
 

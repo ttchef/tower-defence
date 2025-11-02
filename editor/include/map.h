@@ -13,13 +13,16 @@ typedef struct Map {
 } Map;
 
 typedef struct MapState {
-    wsJson json;
+    wsJson* json;
     Map map;
+    const char* filepath;
 } MapState;
 
 void updateMapState(Manager* manager);
 void drawMapState(Manager* manager);
 
 void deinitMapState(Manager* manager);
+
+void newMap(Manager* manager, const char* filepath);
 
 #endif

@@ -2,7 +2,11 @@
 #include "menuBar.h"
 #include "Manager.h"
 #include "definies.h"
+#include "map.h"
+
 #include <raylib.h>
+
+#include "tinyfiledialogs/tinyfiledialogs.h"
 
 void initMneuBar(Manager *manager) {
     MenuBar* bar = &manager->bar;
@@ -49,8 +53,12 @@ void drawMenuBar(Manager *manager) {
     // Draw File
     drawDropDownMenu(&bar->fileMenu);
     switch (bar->fileMenu.pressed) {
-        case (1 << 0): 
-            printf("Option 1\n");
+        case (1 << 0): {
+                const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
+                if (filepath) {
+                    newMap(manager, filepath);
+                }
+            }
             break;
         case (1 << 1):
             printf("Option 2\n");
