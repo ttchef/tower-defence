@@ -33,6 +33,7 @@ void initMneuBar(Manager *manager) {
         "New",
         "Open",
         "Save",
+        "Save As",
     };
 
     memcpy(bar->fileMenu.options, options, sizeof(options));
@@ -64,7 +65,9 @@ void drawMenuBar(Manager *manager) {
             printf("Option 2\n");
             break;
         case (1 << 2):
-            printf("Option 3\n");
+            saveMap(manager);
+        case (1 << 3):
+
             break;
     };
 }

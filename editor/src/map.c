@@ -3,10 +3,19 @@
 #include "definies.h"
 #include "Manager.h"
 #include <wsJson/ws_globals.h>
+#include <wsJson/ws_json.h>
 
 void updateMapState(Manager* manager) {
-    int32_t i = manager->guiWidth;
-    i++;
+    MapState* m = &manager->map;
+
+    if (!m->json) return;
+    wsJson* bgR = wsJsonGet(m->json, "bgR");
+    if (bgR->type == WS_JSON_NUMBER) {
+        wsJsonSetNumber(m->json, "bgR", m->map.backgroundColor.r);
+    }
+    else if (bgR->type == WS_JSON_NULL) {
+        wsJsonSetNullToNumber(m->json, "bgR", m->map.backgroundColor.r);
+    }
 }
 
 void drawMap(Manager* manager) {
@@ -46,6 +55,7 @@ void createJsonNullObject(wsJson** root) {
     *root = wsJsonInitObject(NULL);
     
     wsJsonAddNull(*root, "name");
+    wsJsonAddNull(*root, "bgR");
 }
 
 void newMap(Manager *manager, const char *filepath) {
@@ -74,3 +84,20 @@ void newMap(Manager *manager, const char *filepath) {
     fclose(file);
 }
 
+void saveMap(Manager* manager) {
+    MapState* m = &manager->map;
+    if (!m->json) return;
+
+    char string[WS_BUFFER_SIZE];
+    wsJsonToString(m->json, string, WS_BUFFER_SIZE);
+
+    FILE* file = fopen(m->filepath, "w");
+    if (!file) {
+        fprintf(stderr, "Failed to map: %s to save!\n", m->filepath);
+        return;
+    }
+
+    fprintf(file, "%s", string);
+
+    fclose(file);
+}
