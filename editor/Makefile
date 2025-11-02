@@ -27,6 +27,14 @@ ifeq ($(OS),windows)
 	LDFLAGS += -lopengl32 -lgdi32 -lwinmn -lole32
 endif
 
+BUILD ?= debug 
+
+ifeq ($(BUILD), release)
+	CFLAGS = -Iinclude -I$(VENDOR) $(CFLAGS_RELEASE)
+else 
+	CFLAGS = -Iinclude -I$(VENDOR) $(CFLAGS_DEBUG)
+endif
+
 TARGET = game
 
 all: run
