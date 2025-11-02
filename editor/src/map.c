@@ -32,9 +32,10 @@ void drawMapStateGui(Manager* manager) {
     const int32_t paddingX = 15;
     const int32_t paddingY = 15;
     const int32_t widthPadding = manager->guiWidth - paddingX * 2;
-    int32_t currentY = paddingY;
+    int32_t currentY = manager->bar.height;
     
-    DrawRectangle(guiOffset, 0, manager->guiWidth, manager->guiHeight, DARKGRAY);
+    DrawRectangle(guiOffset, currentY, manager->guiWidth, manager->guiHeight, DARKGRAY);
+    currentY += paddingY;
 
     GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->map.backgroundColor);
     currentY += widthPadding;
@@ -42,7 +43,6 @@ void drawMapStateGui(Manager* manager) {
 
 void drawMapState(Manager *manager) {
     drawMap(manager);
-    drawMapStateGui(manager);
 }
 
 void deinitMapState(Manager *manager) {
@@ -101,3 +101,4 @@ void saveMap(Manager* manager) {
 
     fclose(file);
 }
+

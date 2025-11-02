@@ -17,6 +17,7 @@ typedef struct State{
     StateType type;
     void (*update)(Manager*);
     void (*draw)(Manager*);
+    void (*drawGui)(Manager*);
 } State;
 
 typedef struct StateStack {

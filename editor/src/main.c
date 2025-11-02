@@ -13,6 +13,7 @@ int main() {
         .type = PROGRAM_STATE_FILE, 
         .update = updateMapState, 
         .draw = drawMapState,
+        .drawGui = drawMapStateGui,
     };
 
     pushState(&manager, fileState);
@@ -29,9 +30,10 @@ int main() {
             ClearBackground(BLACK);
   
             BeginMode2D(manager.camera);
-                currentState->draw(&manager);;
+                currentState->draw(&manager);
             EndMode2D();
-
+            
+            currentState->drawGui(&manager);
             drawMenuBar(&manager);  
         EndDrawing();
     }

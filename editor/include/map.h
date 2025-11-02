@@ -20,6 +20,7 @@ typedef struct MapState {
 
 void updateMapState(Manager* manager);
 void drawMapState(Manager* manager);
+void drawMapStateGui(Manager* manager);
 
 void deinitMapState(Manager* manager);
 
