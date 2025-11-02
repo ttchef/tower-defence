@@ -10,7 +10,6 @@
 #include <string.h>
 
 #ifdef _WIN32
-    #define RAYLIB_NOMAIN
 
     #include <windows.h>
 
