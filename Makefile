@@ -22,7 +22,14 @@ OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
 OS ?= linux
 
 ifeq ($(OS),windows)
-	LDFLAGS += -lopengl32 -lgdi32 -lwinmm -lole32 -lcomdlg32 -lmingw32 
+	CC = x86_64-w64-mingw32-gcc
+	TARGET = game.exe
+	LDFLAGS += -lopengl32 -lgdi32 -lwinmm -lole32 -lcomdlg32 -static
+	CFLAGS += -D_WIN32
+else
+	CC = gcc
+	TARGET = game
+	LDFLAGS = -lraylib -lm
 endif
 
 BUILD ?= debug 
