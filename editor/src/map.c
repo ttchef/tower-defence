@@ -5,6 +5,32 @@
 #include <wsJson/ws_globals.h>
 #include <wsJson/ws_json.h>
 
+char* readFileToString(const char* filename, size_t* size) {
+    FILE* file = fopen(filename, "rb");
+    if (!file) {
+        fprintf(stderr, "Failed to open file: %s\n", filename);
+        return NULL;
+    }
+
+    fseek(file, 0, SEEK_END);
+    int64_t length = ftell(file);
+    rewind(file);
+
+    char* buffer = malloc(length + 1);
+    if (!buffer) {
+        fclose(file);
+        fprintf(stderr, "Failde to alloc memory for buffer when reading a file: %s\n", filename);
+        return NULL;
+    }
+
+    size_t bytesRead = fread(buffer, 1, length, file);
+    buffer[bytesRead] = '\0';
+
+    fclose(file);
+    *size = bytesRead;
+    return buffer;
+}
+
 void updateMapState(Manager* manager) {
     MapState* m = &manager->map;
 
@@ -86,16 +112,20 @@ void newMap(Manager *manager, const char *filepath) {
 
 void openMap(Manager* manager, const char* filepath) {
     MapState* m = &manager->map;
+    if (m->json) wsJsonFree(m->json);
 
-    FILE* file = fopen(filepath, "r");
-    if (!file) {
-        fprintf(stderr, "Failde to open file: %s\n", filepath);
+    size_t size;
+    const char* fileString = readFileToString(filepath, &size);
+    if (!fileString) {
+        fprintf(stderr, "Failed reading file: %s\n", filepath);
         return;
     }
 
-    if (m->json) wsJsonFree(m->json);
-
-    fclose(file);
+    m->json = wsStringToJson(&fileString);
+    if (!m->json) {
+        fprintf(stderr, "Failed to parse file: %s to json\n", filepath);
+        return;
+    } 
 }
 
 void saveMap(Manager* manager) {

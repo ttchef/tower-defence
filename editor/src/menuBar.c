@@ -53,6 +53,7 @@ void drawMenuBar(Manager *manager) {
 
     // Draw File
     drawDropDownMenu(&bar->fileMenu);
+    if (bar->fileMenu.pressed) bar->fileMenu.isOpened = !bar->fileMenu.isOpened;
     switch (bar->fileMenu.pressed) {
         case (1 << 0): {
                 const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
@@ -64,10 +65,8 @@ void drawMenuBar(Manager *manager) {
         case (1 << 1): {
                 if (manager->map.json) {
                     // Ask to save map
-                    int32_t save = tinyfd_messageBox("Title", "Message", "yesno", "warning", 1);
-                    if (save) {
-                        saveMap(manager);   
-                    }
+                    int32_t save = tinyfd_messageBox("Warning", "You have unsaved changes. Do you want to save them?", "yesno", "warning", 1);
+                    if (save) saveMap(manager);   
                 }
 
                 const char* filepath = tinyfd_openFileDialog("Open Map", "", 0, NULL, NULL, 0);
