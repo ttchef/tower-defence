@@ -40,8 +40,6 @@ else
 	CFLAGS = -Iinclude -I$(VENDOR) $(CFLAGS_DEBUG)
 endif
 
-TARGET = game
-
 all: run
 
 %.o: %.c
