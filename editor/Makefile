@@ -21,6 +21,12 @@ WSJSON_OBJ = $(VENDOR)/wsJson/src/ws_json.o
 SRC_FILES = $(shell find src -name *.c) 
 OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
 
+OS ?= linux
+
+ifeq ($(OS),windows)
+	LDFLAGS += -lopengl32 -lgdi32 -lwinmn -lole32
+endif
+
 TARGET = game
 
 all: run

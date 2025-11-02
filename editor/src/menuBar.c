@@ -57,9 +57,7 @@ void drawMenuBar(Manager *manager) {
     switch (bar->fileMenu.pressed) {
         case (1 << 0): {
                 const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
-                if (filepath) {
-                    newMap(manager, filepath);
-                }
+                if (filepath) newMap(manager, filepath);
             }
             break;
         case (1 << 1): {
@@ -70,9 +68,7 @@ void drawMenuBar(Manager *manager) {
                 }
 
                 const char* filepath = tinyfd_openFileDialog("Open Map", "", 0, NULL, NULL, 0);
-                if (filepath) {
-                    openMap(manager, filepath);    
-                }
+                if (filepath) openMap(manager, filepath);    
             }
             break;
         case (1 << 2):
