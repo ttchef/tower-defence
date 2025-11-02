@@ -1,11 +1,9 @@
 
 #include "file.h"
-#include <raylib.h>
+#include "Manager.h"
 
 #define RAYGUI_IMPLEMENTATION
 #include <raygui.h>
-
-#include "Manager.h"
 
 int main() {
 

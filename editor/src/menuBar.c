@@ -1,6 +1,8 @@
 
 #include "menuBar.h"
 #include "Manager.h"
+#include "definies.h"
+#include <raylib.h>
 
 void initMneuBar(Manager *manager) {
     MenuBar* bar = &manager->bar;
@@ -14,14 +16,25 @@ void initMneuBar(Manager *manager) {
     bar->currentX = bar->paddingXBound;
     bar->buttonHeight = bar->height - bar->paddingYBound * 2;
 
-    bar->file = (Rectangle){
-        bar->currentX,
-        bar->paddingYBound,
-        80,
-        bar->buttonHeight,
+    bar->fileMenu.button = (Rectangle){
+        .x = bar->currentX,
+        .y = bar->paddingYBound,
+        .width = 80,
+        .height = bar->buttonHeight,
     };
-    bar->currentX += 20;
 
+    bar->fileMenu.buttonText = "File";
+    
+    const char* options[] = {
+        "New",
+        "Open",
+        "Save",
+    };
+
+    memcpy(bar->fileMenu.options, options, sizeof(options));
+    bar->fileMenu.optionsCount = ARRAY_COUNT(options);
+
+    bar->currentX += 80 + bar->paddingXObject;
 }
 
 void updateMenuBar(Manager *manager) {
@@ -34,6 +47,39 @@ void drawMenuBar(Manager *manager) {
     DrawRectangle(0, 0, manager->windowWidth, bar->height, DARKGRAY);
 
     // Draw File
-    GuiButton(bar->file, "File");
+    drawDropDownMenu(&bar->fileMenu);
+    switch (bar->fileMenu.pressed) {
+        case (1 << 0): 
+            printf("Option 1\n");
+            break;
+        case (1 << 1):
+            printf("Option 2\n");
+            break;
+        case (1 << 2):
+            printf("Option 3\n");
+            break;
+    };
+}
+
+void drawDropDownMenu(DropDownMenu *menu) {
+    menu->pressed = 0;
+    if (GuiButton(menu->button, menu->buttonText)) {
+        menu->isOpened = !menu->isOpened;
+    }
+
+    if (menu->isOpened) {
+        for (int32_t i = 0; i < menu->optionsCount; i++) {
+            Rectangle pos = (Rectangle){
+                .x = menu->button.x,
+                .y = menu->button.y + menu->button.height * (i + 1),
+                .width = menu->button.width,
+                .height = menu->button.height,
+            };
+            if (GuiButton(pos, menu->options[i])) {
+                int32_t num = 1 << i;
+                menu->pressed |= num;
+            }
+        }
+    }
 }
 
