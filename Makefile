@@ -17,7 +17,8 @@ TINY_OBJ = $(VENDOR)/tinyfiledialogs/tinyfiledialogs.o
 WSJSON_SRC = $(VENDOR)/wsJson/src/ws_json.c
 WSJSON_OBJ = $(VENDOR)/wsJson/src/ws_json.o
 
-SRC_FILES = $(shell find src -name *.c) 
+#SRC_FILES = $(shell find src -name *.c) 
+SRC_FILES = $(wildcard src/*.c) $(wildcard src/**/*.c)
 OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
 
 OS ?= linux
