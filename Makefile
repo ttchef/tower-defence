@@ -26,7 +26,7 @@ OS ?= linux
 ifeq ($(OS),windows)
 	CC = gcc
 	TARGET = game.exe
-	LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm -lole32 -lcomdlg32 -lm -static 
+	LDFLAGS = -lraylib -lopengl32 -lgdi32 -lwinmm -lole32 -lcomdlg32 -lm 
 	CFLAGS_EXTRA += -D_WIN32 
 else
 	CC = gcc
