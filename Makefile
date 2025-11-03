@@ -3,6 +3,7 @@ CC = gcc
 
 CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpedantic -g -O0 -fsanitize=address -fsanitize=undefined -std=c99
 CFLAGS_RELEASE = -O2
+CFLAGS_EXTRA =
 
 LDFLAGS = -lraylib -lm
 
@@ -24,8 +25,8 @@ OS ?= linux
 ifeq ($(OS),windows)
 	CC = x86_64-w64-mingw32-gcc
 	TARGET = game.exe
-	LDFLAGS += -lopengl32 -lgdi32 -lwinmm -lole32 -lcomdlg32 -static -mconsole
-	CFLAGS += -D_WIN32
+	LDFLAGS += -lopengl32 -lgdi32 -lwinmm -lole32 -lcomdlg32 -static 
+	CFLAGS_EXTRA += -D_WIN32 -mconsole
 else
 	CC = gcc
 	TARGET = game
@@ -35,9 +36,9 @@ endif
 BUILD ?= debug 
 
 ifeq ($(BUILD), release)
-	CFLAGS = -Iinclude -I$(VENDOR) $(CFLAGS_RELEASE)
+	CFLAGS += -Iinclude -I$(VENDOR) $(CFLAGS_RELEASE) $(CFLAGS_EXTRA)
 else 
-	CFLAGS = -Iinclude -I$(VENDOR) $(CFLAGS_DEBUG)
+	CFLAGS += -Iinclude -I$(VENDOR) $(CFLAGS_DEBUG) $(CFLAGS_EXTRA)
 endif
 
 all: run
@@ -51,11 +52,11 @@ build/$(TARGET): $(OBJ_FILES)
 
 $(TINY_OBJ): $(TINY_SRC)
 	@echo "@Compiling tinyfiledialogs..."
-	$(CC) -c $(TINY_SRC) -o $(TINY_OBJ)
+	$(CC) $(CFLAGS_EXTRA) -c $(TINY_SRC) -o $(TINY_OBJ)
 
 $(WSJSON_OBJ): $(WSJSON_SRC)
 	@echo "@Compiling wsJson..."
-	$(CC) -c $(WSJSON_SRC) -o $(WSJSON_OBJ) -I$(VENDOR)/wsJson/include/wsJson
+	$(CC) $(CFLAGS_EXTRA) -c $(WSJSON_SRC) -o $(WSJSON_OBJ) -I$(VENDOR)/wsJson/include/wsJson
 
 run: clean build/$(TARGET)
 	./build/$(TARGET)

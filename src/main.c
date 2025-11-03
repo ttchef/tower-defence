@@ -6,6 +6,7 @@
 int main() {
 
     GameManager* gm = malloc(sizeof(GameManager));
+    
     initGame(gm);
 
     gm->states.top = pushGameState(gm, (GameState){STATE_PLAYING, updatePlaying, drawPlaying});
