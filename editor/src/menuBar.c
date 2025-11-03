@@ -57,6 +57,7 @@ void drawMenuBar(Manager *manager) {
     switch (bar->fileMenu.pressed) {
         case (1 << 0): {
                 const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
+                printf("Filepath: %s\n", filepath);
                 if (filepath) newMap(manager, filepath);
             }
             break;
