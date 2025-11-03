@@ -36,9 +36,9 @@ endif
 BUILD ?= debug 
 
 ifeq ($(BUILD), release)
-	CFLAGS += -Iinclude -I$(VENDOR) -I$(VENDOR)/raygui/src -I$(VENDOR)/wsJson/include/wsJson $(CFLAGS_RELEASE) 
+	CFLAGS += -Iinclude -I$(VENDOR) -I$(VENDOR)/raygui/src -I$(VENDOR)/wsJson/include $(CFLAGS_RELEASE) 
 else 
-	CFLAGS += -Iinclude -I$(VENDOR) -I$(VENDOR)/raygui/src -I$(VENDOR)/wsJson/include/wsJson $(CFLAGS_DEBUG) 
+	CFLAGS += -Iinclude -I$(VENDOR) -I$(VENDOR)/raygui/src -I$(VENDOR)/wsJson/include $(CFLAGS_DEBUG) 
 endif
 
 all: run
