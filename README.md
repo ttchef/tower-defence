@@ -14,8 +14,8 @@ Tower Defence
 
 # Dependencies
  - raylib 
- - raygui
 
 Submodules
  - tinyfiledialogs
+ - raygui
  - wsJson (own lib)
