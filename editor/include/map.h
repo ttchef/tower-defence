@@ -4,6 +4,7 @@
 
 #include "definies.h"
 #include "wsJson/ws_json.h"
+#include "file.h"
 
 typedef struct Map {
     Color backgroundColor;
@@ -24,9 +25,9 @@ void drawMapStateGui(Manager* manager);
 
 void deinitMapState(Manager* manager);
 
-void newMap(Manager* manager, const char* filepath);
-void openMap(Manager* manager, const char* filepath);
-void saveMapAs(Manager* manager, const char* filepath);
+void newMap(Manager* manager, path_t filepath);
+void openMap(Manager* manager, path_t filepath);
+void saveMapAs(Manager* manager, path_t filepath);
 void saveMap(Manager* manager);
 
 #endif

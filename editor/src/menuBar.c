@@ -5,6 +5,7 @@
 #include "map.h"
 
 #include <raylib.h>
+#include <wchar.h>
 
 #include "tinyfiledialogs/tinyfiledialogs.h"
 
@@ -56,8 +57,8 @@ void drawMenuBar(Manager *manager) {
     if (bar->fileMenu.pressed) bar->fileMenu.isOpened = !bar->fileMenu.isOpened;
     switch (bar->fileMenu.pressed) {
         case (1 << 0): {
-                const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
-                printf("Filepath: %s\n", filepath);
+                path_t filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
+                printf("Filepath: %ls\n", filepath);
                 if (filepath) newMap(manager, filepath);
             }
             break;
@@ -68,7 +69,7 @@ void drawMenuBar(Manager *manager) {
                     if (save) saveMap(manager);   
                 }
 
-                const char* filepath = tinyfd_openFileDialog("Open Map", "", 0, NULL, NULL, 0);
+                path_t filepath = tinyfd_openFileDialog("Open Map", "", 0, NULL, NULL, 0);
                 if (filepath) openMap(manager, filepath);    
             }
             break;

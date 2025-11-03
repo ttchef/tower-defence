@@ -5,6 +5,8 @@
 #include <wsJson/ws_globals.h>
 #include <wsJson/ws_json.h>
 
+#include <wchar.h>
+
 char* readFileToString(const char* filename, size_t* size) {
     FILE* file = fopen(filename, "rb");
     if (!file) {
@@ -84,13 +86,13 @@ void createJsonNullObject(wsJson** root) {
     wsJsonAddNull(*root, "bgR");
 }
 
-void newMap(Manager *manager, const char *filepath) {
+void newMap(Manager *manager, path_t filepath) {
     MapState* m = &manager->map;
 
     // Create File
-    FILE* file = fopen(filepath, "w");
+    FILE* file = fileOpen(filepath, "w");
     if (!file) {
-        fprintf(stderr, "Failde to create new Map: %s!\n", filepath);
+        fprintf(stderr, "Failed to create new Map: %s!\n", filepath);
         return;
     }
 
@@ -110,7 +112,7 @@ void newMap(Manager *manager, const char *filepath) {
     fclose(file);
 }
 
-void openMap(Manager* manager, const char* filepath) {
+void openMap(Manager* manager, path_t filepath) {
     MapState* m = &manager->map;
     if (m->json) wsJsonFree(m->json);
 
