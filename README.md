@@ -10,7 +10,9 @@ git clone --recurse-submodules https://github.com/ttchef/tower-defence.git
 
 # Game Idea
 
-Tower Defence
+Tower Defence 
+
+A epic 4k game
 
 # Dependencies
  - raylib 
