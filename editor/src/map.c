@@ -7,8 +7,8 @@
 
 #include <wchar.h>
 
-char* readFileToString(const char* filename, size_t* size) {
-    FILE* file = fopen(filename, "rb");
+char* readFileToString(path_t filename, size_t* size) {
+    FILE* file = fileOpen(filename, "rb");
     if (!file) {
         fprintf(stderr, "Failed to open file: %s\n", filename);
         return NULL;
