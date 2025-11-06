@@ -16,7 +16,7 @@ typedef struct Map {
 typedef struct MapState {
     wsJson* json;
     Map map;
-    const char* filepath;
+    path_t filepath;
 } MapState;
 
 void updateMapState(Manager* manager);

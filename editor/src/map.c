@@ -8,7 +8,7 @@
 #include <wchar.h>
 
 char* readFileToString(path_t filename, size_t* size) {
-    FILE* file = fileOpen(filename, "rb");
+    FILE* file = fileOpen(filename, (path_t)"rb");
     if (!file) {
         fprintf(stderr, "Failed to open file: %s\n", filename);
         return NULL;
@@ -90,7 +90,7 @@ void newMap(Manager *manager, path_t filepath) {
     MapState* m = &manager->map;
 
     // Create File
-    FILE* file = fileOpen(filepath, "w");
+    FILE* file = fileOpen(filepath, (path_t)"w");
     if (!file) {
         fprintf(stderr, "Failed to create new Map: %s!\n", filepath);
         return;
@@ -137,7 +137,7 @@ void saveMap(Manager* manager) {
     char string[WS_BUFFER_SIZE];
     wsJsonToString(m->json, string, WS_BUFFER_SIZE);
 
-    FILE* file = fopen(m->filepath, "w");
+    FILE* file = fileOpen(m->filepath, (path_t)"w");
     if (!file) {
         fprintf(stderr, "Failed to map: %s to save!\n", m->filepath);
         return;
