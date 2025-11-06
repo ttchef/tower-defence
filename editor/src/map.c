@@ -7,8 +7,8 @@
 
 #include <wchar.h>
 
-char* readFileToString(path_t filename, size_t* size) {
-    FILE* file = fileOpen(filename, (path_t)"rb");
+char* readFileToString(const char* filename, size_t* size) {
+    FILE* file = fileOpen(filename, "rb");
     if (!file) {
         fprintf(stderr, "Failed to open file: %s\n", filename);
         return NULL;
@@ -86,11 +86,11 @@ void createJsonNullObject(wsJson** root) {
     wsJsonAddNull(*root, "bgR");
 }
 
-void newMap(Manager *manager, path_t filepath) {
+void newMap(Manager *manager, const char* filepath) {
     MapState* m = &manager->map;
 
     // Create File
-    FILE* file = fileOpen(filepath, (path_t)"w");
+    FILE* file = fileOpen(filepath, "w");
     if (!file) {
         fprintf(stderr, "Failed to create new Map: %s!\n", filepath);
         return;
@@ -112,7 +112,7 @@ void newMap(Manager *manager, path_t filepath) {
     fclose(file);
 }
 
-void openMap(Manager* manager, path_t filepath) {
+void openMap(Manager* manager, const char* filepath) {
     MapState* m = &manager->map;
     if (m->json) wsJsonFree(m->json);
 
@@ -137,7 +137,7 @@ void saveMap(Manager* manager) {
     char string[WS_BUFFER_SIZE];
     wsJsonToString(m->json, string, WS_BUFFER_SIZE);
 
-    FILE* file = fileOpen(m->filepath, (path_t)"w");
+    FILE* file = fileOpen(m->filepath, "w");
     if (!file) {
         fprintf(stderr, "Failed to map: %s to save!\n", m->filepath);
         return;
