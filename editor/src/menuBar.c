@@ -67,8 +67,7 @@ void drawMenuBar(Manager *manager) {
             }
             break;
         case (1 << 1): {
-                if (manager->map.json) {
-                    // Ask to save map
+                if (manager->map.json && !manager->map.saved) {
                     int32_t save = tinyfd_messageBox("Warning", "You have unsaved changes. Do you want to save them?", "yesno", "warning", 1);
                     if (save) saveMap(manager);   
                 }

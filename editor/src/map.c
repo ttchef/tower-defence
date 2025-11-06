@@ -33,6 +33,13 @@ char* readFileToString(const char* filename, size_t* size) {
     return buffer;
 }
 
+void syncMapAndJson(Manager* manager) {
+    MapState* m = &manager->map;
+
+    if (!m->json) return;
+    m->map.backgroundColor.r = wsJsonGetNumber(m->json, "bgR");
+}
+
 void updateMapState(Manager* manager) {
     MapState* m = &manager->map;
 
@@ -44,6 +51,8 @@ void updateMapState(Manager* manager) {
     else if (bgR->type == WS_JSON_NULL) {
         wsJsonSetNullToNumber(m->json, "bgR", m->map.backgroundColor.r);
     }
+
+    m->saved = false;
 }
 
 void drawMap(Manager* manager) {
@@ -128,6 +137,8 @@ void openMap(Manager* manager, const char* filepath) {
         fprintf(stderr, "Failed to parse file: %s to json\n", filepath);
         return;
     } 
+    m->filepath = filepath;
+    syncMapAndJson(manager);
 }
 
 void saveMap(Manager* manager) {
@@ -146,5 +157,6 @@ void saveMap(Manager* manager) {
     fprintf(file, "%s", string);
 
     fclose(file);
+    m->saved = true;
 }
 

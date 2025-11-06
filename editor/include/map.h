@@ -17,6 +17,7 @@ typedef struct MapState {
     wsJson* json;
     Map map;
     const char* filepath;
+    bool saved;
 } MapState;
 
 void updateMapState(Manager* manager);
