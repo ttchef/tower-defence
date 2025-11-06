@@ -55,10 +55,14 @@ void drawMenuBar(Manager *manager) {
     // Draw File
     drawDropDownMenu(&bar->fileMenu);
     if (bar->fileMenu.pressed) bar->fileMenu.isOpened = !bar->fileMenu.isOpened;
+
+    const char* filter[] = {
+        "*.json"
+    };
+
     switch (bar->fileMenu.pressed) {
         case (1 << 0): {
-                const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 0, NULL, NULL);
-                printf("Filepath: %ls\n", filepath);
+                const char* filepath = tinyfd_saveFileDialog("New Map", "new.json", 1, filter, NULL);
                 if (filepath) newMap(manager, filepath);
             }
             break;
@@ -69,7 +73,7 @@ void drawMenuBar(Manager *manager) {
                     if (save) saveMap(manager);   
                 }
 
-                const char* filepath = tinyfd_openFileDialog("Open Map", "", 0, NULL, NULL, 0);
+                const char* filepath = tinyfd_openFileDialog("Open Map", "", 1, filter, NULL, 0);
                 if (filepath) openMap(manager, filepath);    
             }
             break;
