@@ -56,6 +56,30 @@ void syncMapAndJson(Manager* manager) {
     }
 }
 
+void addPath(Manager* manager, Path* path) {
+    MapState* m = &manager->map;
+    Map* map = &m->map;
+
+    if (!map->paths) {
+        map->pathsCount = 1;
+        map->paths = malloc(sizeof(Path) * map->pathsCount);
+        if (!map->paths) {
+            fprintf(stderr, "Failed to allocate path!\n");
+            map->pathsCount = 0;
+            return;
+        }
+    }
+    else {
+        map->pathsCount++;
+        map->paths = realloc(map->paths, map->pathsCount);
+        if (!map->paths) {
+            fprintf(stderr, "Failed to realloc paths!\n");
+            exit(-1);
+        }
+        memcpy(&map->paths[map->pathsCount - 1], path, sizeof(Path));
+    }
+}
+
 void initMapState(Manager *manager) {
     MapState* m = &manager->map;
 
@@ -67,6 +91,9 @@ void initMapState(Manager *manager) {
         m->tabs[i] = i;
     }
     m->currentTab = 0;
+
+    m->map.pathsCount = 0;
+    m->map.paths = NULL;
 }
 
 void updateMapState(Manager* manager) {
@@ -115,8 +142,16 @@ void drawMapStateGuiTabPath(Manager* manager, int32_t guiOffset, int32_t padding
     y++;
 
     int32_t addPointButtonHeight = 30;
-    GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Point");
+    if (GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Path")) {
+        
+    }
     currentY += addPointButtonHeight + paddingY;
+
+    if (GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Point")) {
+    
+    }
+    currentY += addPointButtonHeight + paddingY;
+
 }
 
 void drawMapStateGui(Manager* manager) {
@@ -159,8 +194,9 @@ void drawMapState(Manager *manager) {
 }
 
 void deinitMapState(Manager *manager) {
-    int32_t window = manager->windowHeight;
-    window++;
+    MapState* m = &manager->map;
+
+    if (m->map.paths) free(m->map.paths);
 }
 
 // Blueprint json with all values set to null
@@ -238,7 +274,7 @@ void saveMap(Manager* manager) {
 
     FILE* file = fileOpen(m->filepath, "w");
     if (!file) {
-        fprintf(stderr, "Failed to map: %s to save!\n", m->filepath);
+        fprintf(stderr, "Failed map: %s to save!\n", m->filepath);
         return;
     }
 
@@ -247,4 +283,5 @@ void saveMap(Manager* manager) {
     fclose(file);
     m->saved = true;
 }
+
 

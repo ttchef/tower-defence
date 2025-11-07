@@ -8,12 +8,18 @@
 
 #define MAX_MAP_NAME_COUNT 28
 
+typedef struct Path {
+    Vector2 start;
+    Vector2 end;
+    Vector2* points;
+    int32_t pointsCount;
+} Path;
+
 typedef struct Map {
     char name[MAX_MAP_NAME_COUNT];
     Color backgroundColor;
-
-    Vector2* pathPoints;
-    int32_t pathPointsCount;
+    Path* paths;
+    int32_t pathsCount;
 } Map;
 
 typedef enum MapStateTabType {
