@@ -18,8 +18,8 @@ WSJSON_SRC = $(VENDOR)/wsJson/src/ws_json.c
 WSJSON_OBJ = $(VENDOR)/wsJson/src/ws_json.o
 
 # Raygui
-RAYGUI_SRC = $(VENDOR)/raygui/src/raygui.c
-RAYGUI_OBJ = $(VENDOR)/raygui/src/raygui.o
+RAYGUI_SRC = $(VENDOR)/src/raygui.c
+RAYGUI_OBJ = $(VENDOR)/src/raygui.o
 
 #SRC_FILES = $(shell find src -name *.c) 
 SRC_FILES = $(wildcard src/*.c) $(wildcard src/**/*.c)
