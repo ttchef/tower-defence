@@ -8,6 +8,11 @@
 
 #include <wchar.h>
 
+const char* tabNames[] = {
+    "Overall",
+    "Textures",
+};
+
 char* readFileToString(const char* filename, size_t* size) {
     FILE* file = fileOpen(filename, "rb");
     if (!file) {
@@ -53,8 +58,14 @@ void syncMapAndJson(Manager* manager) {
 void initMapState(Manager *manager) {
     MapState* m = &manager->map;
 
+    // Initial text
     const char* initialText = "Map Name";
     strcpy(m->map.name, initialText);
+
+    for (int32_t i = 0; i < MAP_STATE_TAB_NUM; i++) {
+        m->tabs[i] = i;
+    }
+    m->currentTab = 0;
 }
 
 void updateMapState(Manager* manager) {
@@ -77,17 +88,12 @@ void drawMap(Manager* manager) {
     DrawRectangle(0, 0, manager->mapWidth, manager->mapHeight, m->map.backgroundColor);
 }
 
-void drawMapStateGui(Manager* manager) {
+void drawMapStateGuiTabOverall(Manager* manager, int32_t guiOffset, int32_t paddingX, int32_t paddingY, int32_t widthPadding, int32_t currentY) {
     MapState* m = &manager->map;
-
-    const int32_t guiOffset = manager->windowWidth - manager->guiWidth;
-    const int32_t paddingX = 15;
-    const int32_t paddingY = 15;
-    const int32_t widthPadding = manager->guiWidth - paddingX * 2;
-    int32_t currentY = manager->bar.height;
     
-    DrawRectangle(guiOffset, currentY, manager->guiWidth, manager->guiHeight, DARKGRAY);
-    currentY += paddingY;
+    GuiSetStyle(TEXTBOX, TEXT_COLOR_NORMAL, 0xffffffff);  
+    GuiSetStyle(TEXTBOX, TEXT_COLOR_FOCUSED, 0xffffffff);  
+    GuiSetStyle(TEXTBOX, TEXT_COLOR_PRESSED, 0x000000ff);
 
     static bool textBoxEditMode = false;
     int32_t textHeight = 30;
@@ -98,6 +104,40 @@ void drawMapStateGui(Manager* manager) {
 
     GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->map.backgroundColor);
     currentY += widthPadding;
+
+
+}
+
+void drawMapStateGui(Manager* manager) {
+    MapState* m = &manager->map;
+
+    const int32_t guiOffset = manager->windowWidth - manager->guiWidth;
+    const int32_t paddingX = 15;
+    const int32_t paddingY = 15;
+    const int32_t widthPadding = manager->guiWidth - paddingX * 2;
+    int32_t currentY = manager->bar.height;
+
+    DrawRectangle(guiOffset, currentY, manager->guiWidth, manager->guiHeight, DARKGRAY);
+    currentY += paddingY;
+
+    const int32_t tabWidth = widthPadding / MAP_STATE_TAB_NUM;
+    const int32_t tabHeight = 25;
+    for (int32_t i = 0; i < MAP_STATE_TAB_NUM; i++) {
+        Rectangle bounds = {
+            .x = guiOffset + paddingX + tabWidth * i,
+            .y = currentY,
+            .width = tabWidth,
+            .height = tabHeight,
+        };
+        if (GuiButton(bounds, tabNames[i])) m->currentTab = i;
+    }
+    currentY += tabHeight + paddingY;
+
+    switch (m->currentTab) {
+        case MAP_STATE_TAB_OVERALL:
+            drawMapStateGuiTabOverall(manager, guiOffset, paddingX, paddingY, widthPadding, currentY);
+            break;
+    };
 }
 
 void drawMapState(Manager *manager) {
@@ -165,6 +205,12 @@ void openMap(Manager* manager, const char* filepath) {
         fprintf(stderr, "Failed to parse file: %s to json\n", filepath);
         return;
     } 
+
+    if (!wsJsonGetString(m->json, "name")) {
+        const char* initialText = "Map Name";
+        strcpy(m->map.name, initialText);
+    }
+
     m->filepath = filepath;
     syncMapAndJson(manager);
 }

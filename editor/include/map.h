@@ -16,11 +16,20 @@ typedef struct Map {
     int32_t pathPointsCount;
 } Map;
 
+typedef enum MapStateTabType {
+    MAP_STATE_TAB_OVERALL,
+    MAP_STATE_TAB_TEXTURES,
+
+    MAP_STATE_TAB_NUM,
+} MapStateTabType;
+
 typedef struct MapState {
     wsJson* json;
     Map map;
     const char* filepath;
     bool saved;
+    MapStateTabType tabs[MAP_STATE_TAB_NUM];
+    int32_t currentTab;
 } MapState;
 
 void initMapState(Manager* manager);
