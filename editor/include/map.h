@@ -30,6 +30,10 @@ typedef enum MapStateTabType {
     MAP_STATE_TAB_NUM,
 } MapStateTabType;
 
+typedef enum MapStatePopUp {
+    MAP_STATE_POP_UP_ADD_PATH = (1 << 0),
+} MapStatePopUp;
+
 typedef struct MapState {
     wsJson* json;
     Map map;
@@ -37,6 +41,7 @@ typedef struct MapState {
     bool saved;
     MapStateTabType tabs[MAP_STATE_TAB_NUM];
     int32_t currentTab;
+    uint32_t popUps;
 } MapState;
 
 void initMapState(Manager* manager);

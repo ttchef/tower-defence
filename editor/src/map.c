@@ -80,6 +80,20 @@ void addPath(Manager* manager, Path* path) {
     }
 }
 
+void addPathWindow(Manager* manager) {
+    const int32_t centerX = manager->windowWidth / 2;
+    const int32_t centerY = manager->windowHeight / 2;
+
+    // Rectangle in the middle of the screen
+    const int32_t backgroundWidth = manager->windowWidth * 0.5;
+    const int32_t backgroundHeight = manager->windowHeight * 0.5;
+    DrawRectangle(centerX - backgroundWidth / 2, centerY - backgroundHeight / 2, backgroundWidth, backgroundHeight, DARKGRAY);
+
+    if (GuiButton((Rectangle){centerX, centerY, 100, 20}, "Close")) {
+        manager->map.popUps &= ~MAP_STATE_POP_UP_ADD_PATH;
+    }
+}
+
 void initMapState(Manager *manager) {
     MapState* m = &manager->map;
 
@@ -132,26 +146,30 @@ void drawMapStateGuiTabOverall(Manager* manager, int32_t guiOffset, int32_t padd
 
     GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->map.backgroundColor);
     currentY += widthPadding;
-
-
 }
 
 void drawMapStateGuiTabPath(Manager* manager, int32_t guiOffset, int32_t paddingX, int32_t paddingY, int32_t widthPadding, int32_t currentY) {
     MapState* m = &manager->map;
     int32_t y = m->currentTab;
     y++;
-
+    
     int32_t addPointButtonHeight = 30;
     if (GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Path")) {
-        
+        m->popUps |= MAP_STATE_POP_UP_ADD_PATH;
     }
-    currentY += addPointButtonHeight + paddingY;
+    int32_t buttonPadding = 10;  
+    currentY += addPointButtonHeight + buttonPadding;
 
     if (GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Point")) {
     
     }
     currentY += addPointButtonHeight + paddingY;
 
+    
+    // Pop ups
+    if (m->popUps & MAP_STATE_POP_UP_ADD_PATH) {
+        addPathWindow(manager);
+    }
 }
 
 void drawMapStateGui(Manager* manager) {
