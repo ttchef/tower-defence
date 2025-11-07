@@ -1,8 +1,8 @@
 
 CC = gcc
 
-CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpedantic -g -O0 -fsanitize=address -fsanitize=undefined -std=c99
-CFLAGS_RELEASE = -O2
+CFLAGS_DEBUG = -Wall -Wextra -Werror -Wpedantic -g -O0 -fsanitize=address -fsanitize=undefined -std=c11
+CFLAGS_RELEASE = -O2 
 CFLAGS_EXTRA =
 
 LDFLAGS = -lraylib -lm
@@ -17,9 +17,13 @@ TINY_OBJ = $(VENDOR)/tinyfiledialogs/tinyfiledialogs.o
 WSJSON_SRC = $(VENDOR)/wsJson/src/ws_json.c
 WSJSON_OBJ = $(VENDOR)/wsJson/src/ws_json.o
 
+# Raygui
+RAYGUI_SRC = $(VENDOR)/raygui/src/raygui.c
+RAYGUI_OBJ = $(VENDOR)/raygui/src/raygui.o
+
 #SRC_FILES = $(shell find src -name *.c) 
 SRC_FILES = $(wildcard src/*.c) $(wildcard src/**/*.c)
-OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ)
+OBJ_FILES = $(SRC_FILES:.c=.o) $(TINY_OBJ) $(WSJSON_OBJ) $(RAYGUI_OBJ)
 
 OS ?= linux
 
@@ -57,6 +61,10 @@ $(TINY_OBJ): $(TINY_SRC)
 $(WSJSON_OBJ): $(WSJSON_SRC)
 	@echo "@Compiling wsJson..."
 	$(CC) -c $(WSJSON_SRC) -o $(WSJSON_OBJ) -I$(VENDOR)/wsJson/include/wsJson
+
+$(RAYGUI_OBJ): $(RAYGUI_SRC)
+	@echo "@Compiling Raygui..."
+	$(CC) -c $(RAYGUI_SRC) -o $(RAYGUI_OBJ)
 
 run: clean build/$(TARGET)
 	./build/$(TARGET)
