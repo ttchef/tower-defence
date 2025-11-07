@@ -2,6 +2,7 @@
 #include "map.h"
 #include "definies.h"
 #include "Manager.h"
+#include <raylib.h>
 #include <wsJson/ws_globals.h>
 #include <wsJson/ws_json.h>
 
@@ -35,22 +36,36 @@ char* readFileToString(const char* filename, size_t* size) {
 
 void syncMapAndJson(Manager* manager) {
     MapState* m = &manager->map;
+    Map* map = &m->map;
+    wsJson* root = m->json;
 
     if (!m->json) return;
-    m->map.backgroundColor.r = wsJsonGetNumber(m->json, "bgR");
+    map->backgroundColor.r = wsJsonGetNumber(root, "backgroundColor.red");
+    map->backgroundColor.g = wsJsonGetNumber(root, "backgroundColor.green");
+    map->backgroundColor.b = wsJsonGetNumber(root, "backgroundColor.blue");
+
+    const char* name = wsJsonGetString(root, "name");
+    if (name) {
+        strcpy(m->map.name, name);
+    }
+}
+
+void initMapState(Manager *manager) {
+    MapState* m = &manager->map;
+
+    const char* initialText = "Map Name";
+    strcpy(m->map.name, initialText);
 }
 
 void updateMapState(Manager* manager) {
     MapState* m = &manager->map;
-
     if (!m->json) return;
-    wsJson* bgR = wsJsonGet(m->json, "bgR");
-    if (bgR->type == WS_JSON_NUMBER) {
-        wsJsonSetNumber(m->json, "bgR", m->map.backgroundColor.r);
-    }
-    else if (bgR->type == WS_JSON_NULL) {
-        wsJsonSetNullToNumber(m->json, "bgR", m->map.backgroundColor.r);
-    }
+
+    wsJsonSetString(m->json, "name", m->map.name);
+    wsJsonSetNumber(m->json, "backgroundColor.red", m->map.backgroundColor.r);
+    wsJsonSetNumber(m->json, "backgroundColor.green", m->map.backgroundColor.g);
+    wsJsonSetNumber(m->json, "backgroundColor.blue", m->map.backgroundColor.b);
+
 
     m->saved = false;
 }
@@ -74,6 +89,13 @@ void drawMapStateGui(Manager* manager) {
     DrawRectangle(guiOffset, currentY, manager->guiWidth, manager->guiHeight, DARKGRAY);
     currentY += paddingY;
 
+    static bool textBoxEditMode = false;
+    int32_t textHeight = 30;
+    if (GuiTextBox((Rectangle){ guiOffset + paddingX, currentY, widthPadding, textHeight}, m->map.name, MAX_MAP_NAME_COUNT, textBoxEditMode)) {
+        textBoxEditMode = !textBoxEditMode;
+    }
+    currentY += textHeight + paddingY;
+
     GuiColorPicker((Rectangle){guiOffset + paddingX, currentY, widthPadding, widthPadding}, "Background Color", &m->map.backgroundColor);
     currentY += widthPadding;
 }
@@ -92,7 +114,13 @@ void createJsonNullObject(wsJson** root) {
     *root = wsJsonInitObject(NULL);
     
     wsJsonAddNull(*root, "name");
-    wsJsonAddNull(*root, "bgR");
+    
+    wsJson* backgroundColor = wsJsonInitObject("backgroundColor");
+    wsJsonAddNull(backgroundColor, "red");
+    wsJsonAddNull(backgroundColor, "green");
+    wsJsonAddNull(backgroundColor, "blue");
+    wsJsonAddField(*root, backgroundColor);
+
 }
 
 void newMap(Manager *manager, const char* filepath) {

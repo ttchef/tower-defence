@@ -47,6 +47,7 @@ void managerInit(Manager* manager) {
     manager->camera.zoom = 1;
 
     initMneuBar(manager);
+    initMapState(manager);
 }
 
 void managerDeinit(Manager *manager) {

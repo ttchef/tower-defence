@@ -6,7 +6,10 @@
 #include "wsJson/ws_json.h"
 #include "file.h"
 
+#define MAX_MAP_NAME_COUNT 28
+
 typedef struct Map {
+    char name[MAX_MAP_NAME_COUNT];
     Color backgroundColor;
 
     Vector2* pathPoints;
@@ -20,6 +23,7 @@ typedef struct MapState {
     bool saved;
 } MapState;
 
+void initMapState(Manager* manager);
 void updateMapState(Manager* manager);
 void drawMapState(Manager* manager);
 void drawMapStateGui(Manager* manager);
