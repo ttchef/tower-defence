@@ -18,6 +18,7 @@ typedef struct Map {
 
 typedef enum MapStateTabType {
     MAP_STATE_TAB_OVERALL,
+    MAP_STATE_TAB_PATH,
     MAP_STATE_TAB_TEXTURES,
 
     MAP_STATE_TAB_NUM,

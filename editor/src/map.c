@@ -10,6 +10,7 @@
 
 const char* tabNames[] = {
     "Overall",
+    "Path",
     "Textures",
 };
 
@@ -108,6 +109,16 @@ void drawMapStateGuiTabOverall(Manager* manager, int32_t guiOffset, int32_t padd
 
 }
 
+void drawMapStateGuiTabPath(Manager* manager, int32_t guiOffset, int32_t paddingX, int32_t paddingY, int32_t widthPadding, int32_t currentY) {
+    MapState* m = &manager->map;
+    int32_t y = m->currentTab;
+    y++;
+
+    int32_t addPointButtonHeight = 30;
+    GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Point");
+    currentY += addPointButtonHeight + paddingY;
+}
+
 void drawMapStateGui(Manager* manager) {
     MapState* m = &manager->map;
 
@@ -136,6 +147,9 @@ void drawMapStateGui(Manager* manager) {
     switch (m->currentTab) {
         case MAP_STATE_TAB_OVERALL:
             drawMapStateGuiTabOverall(manager, guiOffset, paddingX, paddingY, widthPadding, currentY);
+            break;
+        case MAP_STATE_TAB_PATH:
+            drawMapStateGuiTabPath(manager, guiOffset, paddingX, paddingY, widthPadding, currentY);
             break;
     };
 }
