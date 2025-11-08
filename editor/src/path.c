@@ -99,12 +99,13 @@ void PathDraw(Path *path) {
         DrawCircle(path->controlPoints[i].x, path->controlPoints[i].y, 5, YELLOW);
     }
         
-
     // Points
     // Lines
+    if (path->pointsCount > 1) DrawSplineSegmentBezierCubic(path->points[0], path->controlPoints[0], path->controlPoints[1], path->points[1], 4, WHITE);
     if (path->pointsCount > 1) {
-        for (int32_t i = 0; i < path->pointsCount - 1; i++) {
-            DrawLine(path->points[i].x, path->points[i].y, path->points[i + 1].x, path->points[i + 1].y, WHITE);
+        for (int32_t i = 1; i < path->pointsCount - 1; i++) {
+            //DrawLine(path->points[i].x, path->points[i].y, path->points[i + 1].x, path->points[i + 1].y, WHITE);
+            DrawSplineSegmentBezierCubic(path->points[i], path->controlPoints[i * 2 - 1], path->controlPoints[i * 2], path->points[i + 1], 4, WHITE);
         }
     }
 
