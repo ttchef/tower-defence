@@ -41,6 +41,9 @@ typedef struct MapState {
     int32_t currentTab;
     uint32_t popUps;
     uint32_t states;
+    PathPointType followingPointType;
+    int32_t followingPoint;
+    int32_t followingPointPath;
 } MapState;
 
 void initMapState(Manager* manager);

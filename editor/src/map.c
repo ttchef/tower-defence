@@ -115,10 +115,23 @@ void initMapState(Manager *manager) {
 
     m->map.pathsCount = 0;
     m->map.paths = NULL;
+
+    m->followingPoint = -1;
+    m->followingPointPath = -1;
 }
 
 void updateMapState(Manager* manager) {
     MapState* m = &manager->map;
+    Map* map = &m->map;
+
+    // Sync json
+    if (m->json) {
+        wsJsonSetString(m->json, "name", m->map.name);
+        wsJsonSetNumber(m->json, "backgroundColor.red", m->map.backgroundColor.r);
+        wsJsonSetNumber(m->json, "backgroundColor.green", m->map.backgroundColor.g);
+        wsJsonSetNumber(m->json, "backgroundColor.blue", m->map.backgroundColor.b);
+        m->saved = false;
+    } 
 
     if (m->states & MAP_STATE_STATE_CREATE_PATH) {
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -126,19 +139,59 @@ void updateMapState(Manager* manager) {
             if (mousePos.x < manager->windowWidth - manager->guiWidth &&
                 mousePos.y > manager->windowHeight - manager->mapHeight) {
                 Vector2 mousePosWorld = GetScreenToWorld2D(mousePos, manager->camera);
-                PathAddPoint(&m->map.paths[m->map.pathsCount - 1], &mousePosWorld);
+
+                // Click on point?
+                bool endLeftClick = false;
+                for (int32_t i = 0; i < map->pathsCount; i++) {
+                    Path* path = &map->paths[i];
+                    for (int32_t j = 0; j < path->pointsCount; j++) {
+                        Vector2* point = &path->points[j];
+                        if (mousePosWorld.x > point->x - 7 && mousePosWorld.x < point->x + 7 &&
+                            mousePosWorld.y > point->y - 7 && mousePosWorld.y < point->y + 7) {
+                            m->followingPointType = PATH_POINT_TYPE_POINT;
+                            m->followingPoint = j;
+                            m->followingPointPath = i;
+                            endLeftClick = true;
+                            break;
+                        }
+                    }
+                    for (int32_t j = 0; j < path->controlPointsCount; j++) {
+                        Vector2* point = &path->controlPoints[j];
+                        if (mousePosWorld.x > point->x - 7 && mousePosWorld.x < point->x + 7 &&
+                            mousePosWorld.y > point->y - 7 && mousePosWorld.y < point->y + 7) {
+                            m->followingPointType = PATH_POINT_TYPE_CONRTOL_POINT;
+                            m->followingPoint = j;
+                            m->followingPointPath = i;
+                            endLeftClick = true;
+                            break;
+                        }
+                    }
+                    if (endLeftClick) break;
+                }
+
+                if (!endLeftClick) {
+                    PathAddPoint(&m->map.paths[m->map.pathsCount - 1], &mousePosWorld);
+                }
             }
         }
     }
 
-    // Sync json
-    if (!m->json) return;
-    wsJsonSetString(m->json, "name", m->map.name);
-    wsJsonSetNumber(m->json, "backgroundColor.red", m->map.backgroundColor.r);
-    wsJsonSetNumber(m->json, "backgroundColor.green", m->map.backgroundColor.g);
-    wsJsonSetNumber(m->json, "backgroundColor.blue", m->map.backgroundColor.b);
+    // Deselect following point
+    if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)) {
+        m->followingPoint = -1;
+        m->followingPointPath = -1;
+    }
 
-    m->saved = false;
+    if (m->followingPoint != -1 && m->followingPointPath != -1) {
+        Path* path = &map->paths[m->followingPointPath];
+        Vector2 mousePos = GetScreenToWorld2D(GetMousePosition(), manager->camera);
+        if (m->followingPointType == PATH_POINT_TYPE_POINT) {
+            path->points[m->followingPoint] = mousePos;
+        }
+        else if (m->followingPointType == PATH_POINT_TYPE_CONRTOL_POINT) {
+            path->controlPoints[m->followingPoint] = mousePos;
+        }
+    }
 }
 
 void drawMap(Manager* manager) {

@@ -4,6 +4,11 @@
 
 #include "definies.h"
 
+typedef enum PathPointType {
+    PATH_POINT_TYPE_POINT,
+    PATH_POINT_TYPE_CONRTOL_POINT,
+} PathPointType;
+
 typedef struct Path {
     Vector2* points;
     int32_t pointsCount;
