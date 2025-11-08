@@ -7,6 +7,8 @@
 typedef struct Path {
     Vector2* points;
     int32_t pointsCount;
+    Vector2* controlPoints;
+    int32_t controlPointsCount;
     bool renderable;
 } Path;
 
