@@ -2,6 +2,7 @@
 #include "map.h"
 #include "definies.h"
 #include "Manager.h"
+#include "path.h"
 #include <raylib.h>
 #include <wsJson/ws_globals.h>
 #include <wsJson/ws_json.h>
@@ -56,7 +57,7 @@ void syncMapAndJson(Manager* manager) {
     }
 }
 
-void addPath(Manager* manager, Path* path) {
+void addEmptyPath(Manager* manager) {
     MapState* m = &manager->map;
     Map* map = &m->map;
 
@@ -76,18 +77,24 @@ void addPath(Manager* manager, Path* path) {
             fprintf(stderr, "Failed to realloc paths!\n");
             exit(-1);
         }
-        memcpy(&map->paths[map->pathsCount - 1], path, sizeof(Path));
     }
+    PathInitEmpty(&map->paths[map->pathsCount - 1]);
 }
 
 void addPathWindow(Manager* manager) {
-    const int32_t centerX = manager->windowWidth / 2;
-    const int32_t centerY = manager->windowHeight / 2;
+    const int32_t centerX = manager->mapWidth / 2;
+    const int32_t centerY = manager->mapHeight / 2;
 
     // Rectangle in the middle of the screen
     const int32_t backgroundWidth = manager->windowWidth * 0.5;
     const int32_t backgroundHeight = manager->windowHeight * 0.5;
-    DrawRectangle(centerX - backgroundWidth / 2, centerY - backgroundHeight / 2, backgroundWidth, backgroundHeight, DARKGRAY);
+    Rectangle rect = {
+        .x = centerX - backgroundWidth / 2,
+        .y = centerY - backgroundHeight / 2,
+        .width = backgroundWidth,
+        .height = backgroundHeight,
+    };
+    DrawRectangleRounded(rect, 0.1f, 10, DARKGRAY);
 
     if (GuiButton((Rectangle){centerX, centerY, 100, 20}, "Close")) {
         manager->map.popUps &= ~MAP_STATE_POP_UP_ADD_PATH;
@@ -112,13 +119,24 @@ void initMapState(Manager *manager) {
 
 void updateMapState(Manager* manager) {
     MapState* m = &manager->map;
-    if (!m->json) return;
 
+    if (m->states & MAP_STATE_STATE_CREATE_PATH) {
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            Vector2 mousePos = GetMousePosition();
+            if (mousePos.x < manager->windowWidth - manager->guiWidth &&
+                mousePos.y > manager->windowHeight - manager->mapHeight) {
+                Vector2 mousePosWorld = GetScreenToWorld2D(mousePos, manager->camera);
+                PathAddPoint(&m->map.paths[m->map.pathsCount - 1], &mousePosWorld);
+            }
+        }
+    }
+
+    // Sync json
+    if (!m->json) return;
     wsJsonSetString(m->json, "name", m->map.name);
     wsJsonSetNumber(m->json, "backgroundColor.red", m->map.backgroundColor.r);
     wsJsonSetNumber(m->json, "backgroundColor.green", m->map.backgroundColor.g);
     wsJsonSetNumber(m->json, "backgroundColor.blue", m->map.backgroundColor.b);
-
 
     m->saved = false;
 }
@@ -128,6 +146,15 @@ void drawMap(Manager* manager) {
     m->map.backgroundColor.a = 255;
     
     DrawRectangle(0, 0, manager->mapWidth, manager->mapHeight, m->map.backgroundColor);
+
+    // white overlay
+    if (m->states & MAP_STATE_STATE_CREATE_PATH) {
+        DrawRectangle(0, 0, manager->mapWidth, manager->mapHeight, (Color){255, 255, 255, 100});
+    }
+    // Path
+    for (int32_t i = 0; i < m->map.pathsCount; i++) {
+        PathDraw(&m->map.paths[m->map.pathsCount - 1]);
+    }
 }
 
 void drawMapStateGuiTabOverall(Manager* manager, int32_t guiOffset, int32_t paddingX, int32_t paddingY, int32_t widthPadding, int32_t currentY) {
@@ -155,7 +182,9 @@ void drawMapStateGuiTabPath(Manager* manager, int32_t guiOffset, int32_t padding
     
     int32_t addPointButtonHeight = 30;
     if (GuiButton((Rectangle){guiOffset + paddingX, currentY, widthPadding, addPointButtonHeight}, "Add Path")) {
-        m->popUps |= MAP_STATE_POP_UP_ADD_PATH;
+        addEmptyPath(manager);
+        m->states |= MAP_STATE_STATE_CREATE_PATH;
+        //m->popUps |= MAP_STATE_POP_UP_ADD_PATH;
     }
     int32_t buttonPadding = 10;  
     currentY += addPointButtonHeight + buttonPadding;
@@ -164,7 +193,6 @@ void drawMapStateGuiTabPath(Manager* manager, int32_t guiOffset, int32_t padding
     
     }
     currentY += addPointButtonHeight + paddingY;
-
     
     // Pop ups
     if (m->popUps & MAP_STATE_POP_UP_ADD_PATH) {

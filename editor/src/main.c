@@ -1,5 +1,6 @@
 
 #include "Manager.h"
+#include "map.h"
 
 int main() {
 

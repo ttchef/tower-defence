@@ -5,15 +5,9 @@
 #include "definies.h"
 #include "wsJson/ws_json.h"
 #include "file.h"
+#include "path.h"
 
 #define MAX_MAP_NAME_COUNT 28
-
-typedef struct Path {
-    Vector2 start;
-    Vector2 end;
-    Vector2* points;
-    int32_t pointsCount;
-} Path;
 
 typedef struct Map {
     char name[MAX_MAP_NAME_COUNT];
@@ -34,6 +28,10 @@ typedef enum MapStatePopUp {
     MAP_STATE_POP_UP_ADD_PATH = (1 << 0),
 } MapStatePopUp;
 
+typedef enum MapStateState {
+    MAP_STATE_STATE_CREATE_PATH = (1 << 0),
+} MapStateState;
+
 typedef struct MapState {
     wsJson* json;
     Map map;
@@ -42,6 +40,7 @@ typedef struct MapState {
     MapStateTabType tabs[MAP_STATE_TAB_NUM];
     int32_t currentTab;
     uint32_t popUps;
+    uint32_t states;
 } MapState;
 
 void initMapState(Manager* manager);
