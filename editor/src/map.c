@@ -61,7 +61,7 @@ void addEmptyPath(Manager* manager) {
     MapState* m = &manager->map;
     Map* map = &m->map;
 
-    if (!map->paths) {
+    if (!map->paths && map->pathsCount == 0) {
         map->pathsCount = 1;
         map->paths = malloc(sizeof(Path) * map->pathsCount);
         if (!map->paths) {
@@ -72,7 +72,7 @@ void addEmptyPath(Manager* manager) {
     }
     else {
         map->pathsCount++;
-        map->paths = realloc(map->paths, map->pathsCount);
+        map->paths = realloc(map->paths, sizeof(Path) * map->pathsCount);
         if (!map->paths) {
             fprintf(stderr, "Failed to realloc paths!\n");
             exit(-1);
@@ -206,7 +206,7 @@ void drawMap(Manager* manager) {
     }
     // Path
     for (int32_t i = 0; i < m->map.pathsCount; i++) {
-        PathDraw(&m->map.paths[m->map.pathsCount - 1]);
+        PathDraw(&m->map.paths[i]);
     }
 }
 
@@ -286,6 +286,18 @@ void drawMapStateGui(Manager* manager) {
             drawMapStateGuiTabPath(manager, guiOffset, paddingX, paddingY, widthPadding, currentY);
             break;
     };
+
+    // State
+    if (m->states & MAP_STATE_STATE_CREATE_PATH) {
+        Rectangle bounds;
+        bounds.width = 200;
+        bounds.height = 50;
+        bounds.x = manager->mapWidth - bounds.width - 15;
+        bounds.y = manager->windowHeight - manager->mapHeight + 15;
+        if (GuiButton(bounds, "Close Edit Path Mode")) {
+            m->states &= ~MAP_STATE_STATE_CREATE_PATH;
+        }
+    }
 }
 
 void drawMapState(Manager *manager) {
